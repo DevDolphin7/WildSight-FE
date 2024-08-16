@@ -12,6 +12,8 @@ import {
 export default function Camera() {
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
+  const [zoom, setZoom] = useState(0); 
+
   const [
     mediaLibraryPermission,
     requestMediaLibraryPermission,
@@ -46,6 +48,15 @@ export default function Camera() {
   async function toggleCameraFacing() {
     setFacing((current) => (current === "back" ? "front" : "back"));
   }
+
+  function zoomIn() {
+    setZoom((prevZoom) => Math.min(prevZoom + 0.001, 1)); // Increase zoom level
+  }
+
+  function zoomOut() {
+    setZoom((prevZoom) => Math.max(prevZoom - 0.001, 0)); // Decrease zoom level
+  }
+
   async function takePicture() {
     if (cameraRef.current) {
       try {
@@ -63,8 +74,15 @@ export default function Camera() {
   }
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
+      <CameraView style={styles.camera} zoom={zoom} facing={facing} ref={cameraRef}>
         <View style={styles.buttonContainer}>
+		<TouchableOpacity style={styles.button} onPress={zoomIn}>
+            <Text style={styles.text}>Zoom In</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={zoomOut}>
+            <Text style={styles.text}>Zoom Out</Text>
+          </TouchableOpacity>
+		  
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
             <Text style={styles.text}>Flip Camera</Text>
           </TouchableOpacity>
@@ -90,7 +108,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'column',
     backgroundColor: "transparent",
     margin: 64,
     justifyContent: "space-around",
