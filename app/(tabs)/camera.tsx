@@ -49,10 +49,13 @@ export default function Camera() {
     setFacing((current) => (current === "back" ? "front" : "back"));
   }
 
+
+  //not working on andrioid
   function zoomIn() {
     setZoom((prevZoom) => Math.min(prevZoom + 0.001, 1)); 
   }
-
+  
+  //not working on andrioid
   function zoomOut() {
     setZoom((prevZoom) => Math.max(prevZoom - 0.001, 0)); 
   }
