@@ -50,11 +50,11 @@ export default function Camera() {
   }
 
   function zoomIn() {
-    setZoom((prevZoom) => Math.min(prevZoom + 0.001, 1)); // Increase zoom level
+    setZoom((prevZoom) => Math.min(prevZoom + 0.001, 1)); 
   }
 
   function zoomOut() {
-    setZoom((prevZoom) => Math.max(prevZoom - 0.001, 0)); // Decrease zoom level
+    setZoom((prevZoom) => Math.max(prevZoom - 0.001, 0)); 
   }
 
   async function takePicture() {
