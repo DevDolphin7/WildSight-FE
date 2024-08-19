@@ -13,7 +13,7 @@ import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../../types"; // Adjust the import path if necessary
+import { RootStackParamList } from "../types"; // Adjust the import path if necessary
 
 type CameraScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -23,11 +23,9 @@ type CameraScreenNavigationProp = StackNavigationProp<
 export default function CameraScreen() {
   const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
-  const [photoUri, setPhotoUri] = useState<string>("");
-
   const [latPosition, setLatPosition] = useState(0);
   const [longPosition, setLongPosition] = useState(0);
-
+  const [photoUri, setPhotoUri] = useState<string>("");
   const [
     mediaLibraryPermission,
     requestMediaLibraryPermission,
@@ -45,9 +43,8 @@ export default function CameraScreen() {
         return Location.getCurrentPositionAsync({});
       })
       .then((data) => {
-        console.log(data);
         setLatPosition(data.coords.latitude);
-        setLatPosition(data.coords.longitude);
+        setLongPosition(data.coords.longitude);
       })
       .catch((err) => {
         console.log(err);

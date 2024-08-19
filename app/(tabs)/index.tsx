@@ -1,20 +1,33 @@
 import { Image, StyleSheet, Button, ImageBackground } from 'react-native';
+import { NavigationContainer, RouteProp} from '@react-navigation/native';
+import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../types'; 
 
+import CameraScreen from '@/components/CameraScreen';
+import PhotoPreview from '@/components/PhotoPreview';
+import PlantIdentification from '@/components/PlantIdentification';
 
 const backgroundImage = require("../../assets/images/icon.png")
 
-export default function HomeScreen() {
 
+
+
+const Stack = createStackNavigator<RootStackParamList>();
+
+export default function App() {
   return (
-    <ImageBackground source={backgroundImage} style={styles.background} resizeMode="cover">
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-          />
-          <Button title="Get Started"></Button>
-          </ImageBackground>
+
+      <Stack.Navigator initialRouteName="Camera">
+        <Stack.Screen name="Camera" component={CameraScreen} options={{ title: 'Camera' }} />
+        <Stack.Screen name="PhotoPreview" component={PhotoPreview} options={{ title: 'Photo Preview' }} />
+        <Stack.Screen name="PlantIdentification" component={PlantIdentification} options={{ title: 'Photo Identification' }} />
+ 
+      </Stack.Navigator>
+
   );
 }
+
+
 
 const styles = StyleSheet.create({
   reactLogo: {
@@ -29,3 +42,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
   }
 });
+
+
