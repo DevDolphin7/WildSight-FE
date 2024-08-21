@@ -25,8 +25,14 @@ interface Result {
 
 }
 
-// Define the props for AiSingleResultCard component
+const handleSubmit = () => {
+  console.log("hello")
+}
+
+
 const AiSingleResultCard: React.FC<{ result: Result }> = ({ result }) => {
+
+
   return (
     <View style={styles.card}>
       
@@ -45,7 +51,7 @@ const AiSingleResultCard: React.FC<{ result: Result }> = ({ result }) => {
       <Text style={styles.subtitle}>
         Also called: {result.species.commonNames.join(", ")}
       </Text>
-      <Button title="Use This One" onPress={() => console.log("Button pressed")} />
+      <Button title="Use This One" onPress={handleSubmit} />
     </View>
   );
 };

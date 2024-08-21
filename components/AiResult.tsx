@@ -26,7 +26,9 @@ interface Result {
   };
   species: Species;
   score: number;
-  images: ImageDetails[]; 
+  images: ImageDetails[];
+
+
 
 }
 
@@ -40,16 +42,14 @@ const AiResult: React.FC<{ route: AiResultRouteProp }> = ({ route }) => {
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Results</Text>
 
-      {/* User's Image */}
       <Text style={styles.subtitle}>Your Image</Text>
       <Image style={styles.image} source={{ uri: photoUri }} />
 
       <Text style={styles.subtitle}>Pick which one is most accurate</Text>
 
-      {/* List of results */}
       <View>
         {results.map((result: Result) => {
-          return <AiSingleResultCard result={result} key={result.gbif.id} />;
+          return <AiSingleResultCard  result={result} key={result.gbif.id} />;
         })}
       </View>
 
