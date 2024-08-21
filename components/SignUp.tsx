@@ -1,45 +1,39 @@
 import {
   ImageBackground,
   View,
-  Text,
   TextInput,
   Button,
   StyleSheet,
 } from "react-native";
-import {
-  Formik,
-  FormikHelpers,
-  FormikProps,
-  Form,
-  Field,
-  FieldProps,
-} from "formik";
-import BackgroundImage from "../assets/images/home-screen-background.png";
-import SignUpForm from "./SignUpForm";
+import { Formik } from "formik";
+const backgroundImage = require("../assets/images/home-screen-background.png");
 
-interface MyFormValues {
-  firstName: string;
+interface FormValues {
+  name: string;
+  email: string;
+  password: string;
 }
 
 export default function SignUp() {
-  const initialValues: MyFormValues = { firstName: "" };
+  const initialValues: FormValues = { name: "", email: "", password: "" };
+
+  const handleSubmit = (values: FormValues): void => {
+    if (Object.values(values).includes("")) {
+      // Find blank fields and highlight to user
+      return;
+    }
+    alert(
+      `Name: ${values.name}\nEmail: ${values.email}\nPassword: ${values.password}`
+    );
+  };
+
   return (
     <ImageBackground
-      source={BackgroundImage}
+      source={backgroundImage}
       style={styles.background}
       resizeMode="cover"
     >
-      <Formik
-        initialValues={{ name: "", email: "", password: "" }}
-        onSubmit={(values) => {
-          if (Object.values(values).includes("")) {
-            return;
-          }
-          alert(
-            `Name: ${values.name}\nEmail: ${values.email}\nPassword: ${values.password}`
-          );
-        }}
-      >
+      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <View style={styles.background}>
             <TextInput
@@ -63,7 +57,7 @@ export default function SignUp() {
               value={values.password}
               style={styles.formEntry}
             />
-            <Button onPress={handleSubmit} title="Submit" />
+            <Button title="Submit" onPress={() => handleSubmit} />
           </View>
         )}
       </Formik>
@@ -79,6 +73,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "transparent",
   },
   formEntry: {
     width: "80%",
