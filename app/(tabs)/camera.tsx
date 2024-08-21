@@ -13,7 +13,7 @@ import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../../types"; // Adjust the import path if necessary
+import { RootStackParamList } from "../../types";
 
 type CameraScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
