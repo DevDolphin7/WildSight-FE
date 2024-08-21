@@ -6,9 +6,10 @@ import MapView, {
 	Region,
 	Callout,
 } from "react-native-maps";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image, Pressable } from "react-native";
 import * as Location from "expo-location";
 import { getINatObservations } from "../iNaturalist-api";
+import { Link } from "expo-router";
 
 export default function Map() {
 	const [points, setPoints] = useState([
@@ -41,12 +42,10 @@ export default function Map() {
 
 	useEffect(() => {
 		if (!region) return;
-
 		const nelat = region.latitude + region.latitudeDelta / 2;
 		const nelng = region.longitude + region.longitudeDelta / 2;
 		const swlat = region.latitude - region.latitudeDelta / 2;
 		const swlng = region.longitude - region.longitudeDelta / 2;
-
 		getINatObservations(nelat, nelng, swlat, swlng, 200)
 			.then((observations) => {
 				const newPoints = observations.map((observation: any) => {
@@ -58,6 +57,7 @@ export default function Map() {
 						imageUrl: imageUrl,
 						species_guess: observation.species_guess,
 						id: observation.id,
+						//shall we add in some more deets here?
 					};
 				});
 				setPoints(newPoints);
@@ -78,6 +78,10 @@ export default function Map() {
 
 	const handleMarkerPress = (marker) => {
 		setSelectedMarker(marker);
+	};
+
+	const handleClose = () => {
+		setSelectedMarker(null);
 	};
 	return (
 		<View style={styles.container}>
@@ -127,9 +131,23 @@ export default function Map() {
 							style={styles.popUpImage}
 						/>
 					) : null}
-					<View>
-						<Text>Sighting:</Text>
-						<Text>Species: {selectedMarker.species_guess}</Text>
+					<View style={styles.sightingTextContainer}>
+						<View style={styles.headerRow}>
+							<Text>Species: {selectedMarker.species_guess}</Text>
+							<Pressable onPress={handleClose} style={styles.closeButton}>
+								<Text style={styles.closeButtonText}>X</Text>
+							</Pressable>
+						</View>
+						<Pressable style={styles.button}>
+							<Link
+								href={{
+									pathname: "/SingleWildlife",
+									params: { iNatId: selectedMarker.id },
+								}}
+							>
+								<Text style={styles.buttonText}>View Details</Text>
+							</Link>
+						</Pressable>
 					</View>
 				</View>
 			) : null}
@@ -140,8 +158,6 @@ export default function Map() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
 	},
 	map: {
 		width: "100%",
@@ -158,5 +174,36 @@ const styles = StyleSheet.create({
 		width: 100,
 		height: 100,
 		marginRight: 10,
+	},
+	sightingTextContainer: {
+		flex: 1,
+	},
+	headerRow: {
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+	},
+	closeButton: {
+		backgroundColor: "#d6d6d6",
+		borderRadius: 15,
+		width: 30,
+		height: 30,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	closeButtonText: {
+		color: "white",
+		fontSize: 14,
+	},
+	button: {
+		backgroundColor: "green",
+		paddingVertical: 5,
+		paddingHorizontal: 10,
+		marginTop: 10,
+		alignSelf: "flex-start",
+	},
+	buttonText: {
+		color: "white",
+		fontSize: 15,
 	},
 });
