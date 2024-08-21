@@ -1,61 +1,58 @@
 import { useRef } from "react";
-import { ImageBackground, View, Image, Button, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { View, Image, Button, StyleSheet } from "react-native";
 import PagerView from "react-native-pager-view";
-import BackgroundImage from "../assets/images/home-screen-background.png";
 
-export default function HomeScreen() {
+type Props = {
+  setSignUpOpen(params: boolean): void;
+};
+
+export default function HomeScreen(props: Props) {
+  const { setSignUpOpen } = props;
   const ref = useRef<PagerView>(null);
-  const navigation = useNavigation();
+
   return (
-    <ImageBackground
-      source={BackgroundImage}
-      style={styles.background}
-      resizeMode="cover"
-    >
-      <PagerView style={styles.background} initialPage={0} ref={ref}>
-        <View style={styles.background} key="1">
-          <View style={styles.page}>
-            <Image
-              source={require("@/assets/images/partial-react-logo.png")}
-              style={styles.reactLogo}
-            />
-            <Button
-              title="SignUp"
-              onPress={() => {
-                navigation.navigate("SignUp");
-              }}
-            ></Button>
-            <Button
-              title="Get Started ->"
-              onPress={() => {
-                ref.current?.setPage(1);
-              }}
-            ></Button>
-          </View>
+    <PagerView style={styles.background} initialPage={0} ref={ref}>
+      <View style={styles.background} key="1">
+        <View style={styles.page}>
+          <Image
+            source={require("@/assets/images/partial-react-logo.png")}
+            style={styles.reactLogo}
+          />
+          <Button
+            title="SignUp"
+            onPress={() => {
+              setSignUpOpen(true);
+            }}
+          ></Button>
+          <Button
+            title="Get Started ->"
+            onPress={() => {
+              ref.current?.setPage(1);
+            }}
+          ></Button>
         </View>
-        <View style={styles.background} key="2">
-          <View style={styles.page}>
-            <Button
-              title="<- Page 2 ->"
-              onPress={() => {
-                ref.current?.setPage(2);
-              }}
-            ></Button>
-          </View>
+      </View>
+      <View style={styles.background} key="2">
+        <View style={styles.page}>
+          <Button
+            title="<- Page 2 ->"
+            onPress={() => {
+              ref.current?.setPage(2);
+            }}
+          ></Button>
         </View>
-        <View style={styles.background} key="3">
-          <View style={styles.page}>
-            <Button
-              title="<- Go Back ->"
-              onPress={() => {
-                ref.current?.setPage(0);
-              }}
-            ></Button>
-          </View>
+      </View>
+      <View style={styles.background} key="3">
+        <View style={styles.page}>
+          <Button
+            title="<- Go Back ->"
+            onPress={() => {
+              ref.current?.setPage(0);
+            }}
+          ></Button>
         </View>
-      </PagerView>
-    </ImageBackground>
+      </View>
+    </PagerView>
   );
 }
 
