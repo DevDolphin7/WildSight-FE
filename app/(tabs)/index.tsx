@@ -1,4 +1,3 @@
-import { StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "@/components/HomeScreen";
 import SignUp from "@/components/SignUp";
@@ -13,7 +12,3 @@ export default function Index() {
     </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({
-  test: { backgroundColor: "red" },
-});

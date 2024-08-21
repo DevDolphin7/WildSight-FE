@@ -2,15 +2,14 @@ import { useRef } from "react";
 import { ImageBackground, View, Image, Button, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import PagerView from "react-native-pager-view";
-
-const backgroundImage = require("../assets/images/home-screen-background.png");
+import BackgroundImage from "../assets/images/home-screen-background.png";
 
 export default function HomeScreen() {
   const ref = useRef<PagerView>(null);
   const navigation = useNavigation();
   return (
     <ImageBackground
-      source={backgroundImage}
+      source={BackgroundImage}
       style={styles.background}
       resizeMode="cover"
     >
@@ -21,7 +20,12 @@ export default function HomeScreen() {
               source={require("@/assets/images/partial-react-logo.png")}
               style={styles.reactLogo}
             />
-            <Button title="SignUp" onPress={() => {navigation.navigate('SignUp')}}></Button>
+            <Button
+              title="SignUp"
+              onPress={() => {
+                navigation.navigate("SignUp");
+              }}
+            ></Button>
             <Button
               title="Get Started ->"
               onPress={() => {
