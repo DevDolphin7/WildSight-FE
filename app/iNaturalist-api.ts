@@ -25,3 +25,14 @@ export const getINatObservations = (
 			console.log("Error getting iNat observations:", error);
 		});
 };
+
+export const getINatObservationById = (id: number) => {
+	return inatApi
+		.get(`/observations/${id}`)
+		.then((response) => {
+			return response.data.results[0];
+		})
+		.catch((error) => {
+			console.log("Error getting unique observation:", error);
+		});
+};
