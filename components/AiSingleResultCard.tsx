@@ -25,12 +25,48 @@ interface Result {
 
 }
 
-const handleSubmit = () => {
-  console.log("hello")
+
+
+interface AiSingleResultCardProps {
+  result: Result;
+  photoUri: string;
+  latPosition: number;
+  longPosition: number;
 }
 
 
-const AiSingleResultCard: React.FC<{ result: Result }> = ({ result }) => {
+const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({ result, photoUri, latPosition, longPosition }) => {
+
+
+
+  const handleSubmit = () => {
+
+     //Plant Name back from AI
+  let scientificName = result.species.scientificNameWithoutAuthor; //must change this to marry up with the AI response.
+  let family = "";
+  let species = "";
+
+  function splitString(inputString: string): void {
+    const [f, ...rest] = inputString.split(" ");
+    family = f;
+    species = rest.join(" ");
+  }
+  splitString(scientificName);
+
+    
+    console.log(family, "family")
+    console.log(species, "species")
+    console.log({uri: photoUri})
+    console.log(result.species.scientificNameWithoutAuthor)
+    console.log(result.species.commonNames)
+
+    //request data from inaturalist
+    
+
+
+    //posting data into database
+  }
+
 
 
   return (

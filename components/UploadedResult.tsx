@@ -33,12 +33,12 @@ export const UploadedResult = () => {
     wikipedia_url: string;
   }
 
-  interface Result {
+  interface Results {
     record: Record;
   }
 
   interface ApiResponse {
-    results: Result[];
+    results: Results[];
   }
 
   function extractData(data: ApiResponse) {
