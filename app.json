@@ -17,37 +17,41 @@
 			"infoPlist": {
 				"NSCameraUsageDescription": "We need access to your camera to take pictures.",
 				"NSMicrophoneUsageDescription": "We need access to your microphone to record videos."
+			},
+			"config": {
+				"googleMapsApiKey": "AIzaSyDhBjwO1xq8jM-JclOJdNvoZ6wJXP28hk8"
 			}
-		},
-		"android": {
-			"adaptiveIcon": {
-				"foregroundImage": "./assets/images/adaptive-icon.png",
-				"backgroundColor": "#FFFFFF",
-				"permissions": [
-					"CAMERA",
-					"RECORD_AUDIO"
-				]
-			}
-		},
-		"web": {
-			"bundler": "metro",
-			"output": "static",
-			"favicon": "./assets/images/favicon.png"
-		},
-		"plugins": [
-			"expo-router",
-			[
-				"expo-location",
-				{
-					"locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location.",
-					
-					"COMMENT - ANDROID PERMISSIONS": "",
-					"isAndroidBackgroundLocationEnabled": false
-				}
-			]
-		],
-		"experiments": {
-			"typedRoutes": true
 		}
+	},
+	"android": {
+		"adaptiveIcon": {
+			"foregroundImage": "./assets/images/adaptive-icon.png",
+			"backgroundColor": "#FFFFFF",
+			"permissions": ["CAMERA", "RECORD_AUDIO"]
+		},
+		"config": {
+			"googleMaps": {
+				"apiKey": "AIzaSyATY_7kFRkl3ku7TpSK4zsZH4HjEn3-QKE"
+			}
+		}
+	},
+	"web": {
+		"bundler": "metro",
+		"output": "static",
+		"favicon": "./assets/images/favicon.png"
+	},
+	"plugins": [
+		"expo-router",
+		[
+			"expo-location",
+			{
+				"locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location.",
+				"COMMENT - ANDROID PERMISSIONS": "",
+				"isAndroidBackgroundLocationEnabled": false
+			}
+		]
+	],
+	"experiments": {
+		"typedRoutes": true
 	}
 }
