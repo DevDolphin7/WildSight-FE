@@ -49,7 +49,12 @@ const AiResult: React.FC<{ route: AiResultRouteProp }> = ({ route }) => {
 
       <View>
         {results.map((result: Result) => {
-          return <AiSingleResultCard  result={result} key={result.gbif.id} />;
+          return <AiSingleResultCard  
+          result={result} 
+          key={result.gbif.id}
+          photoUri={photoUri}
+              latPosition={latPosition}
+              longPosition={longPosition} />;
         })}
       </View>
 

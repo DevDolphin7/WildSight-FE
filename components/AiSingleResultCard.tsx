@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Text, StyleSheet, View, Image } from "react-native";
+import axios from "axios";
 
 // Define the Species and Result interfaces to match the structure expected
 interface Species {
@@ -21,11 +22,8 @@ interface Result {
   };
   species: Species;
   score: number;
-  images: ImageDetails[]; 
-
+  images: ImageDetails[];
 }
-
-
 
 interface AiSingleResultCardProps {
   result: Result;
@@ -34,50 +32,58 @@ interface AiSingleResultCardProps {
   longPosition: number;
 }
 
-
-const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({ result, photoUri, latPosition, longPosition }) => {
-
-
-
+const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
+  result,
+  photoUri,
+  latPosition,
+  longPosition,
+}) => {
   const handleSubmit = () => {
+    //Plant Name back from AI
+    let scientificName = result.species.scientificNameWithoutAuthor; //must change this to marry up with the AI response.
+    let family = "";
+    let species = "";
+    let wiki = "";
+    let commonName = "";
 
-     //Plant Name back from AI
-  let scientificName = result.species.scientificNameWithoutAuthor; //must change this to marry up with the AI response.
-  let family = "";
-  let species = "";
-
-  function splitString(inputString: string): void {
-    const [f, ...rest] = inputString.split(" ");
-    family = f;
-    species = rest.join(" ");
-  }
-  splitString(scientificName);
-
-    
-    console.log(family, "family")
-    console.log(species, "species")
-    console.log({uri: photoUri})
-    console.log(result.species.scientificNameWithoutAuthor)
-    console.log(result.species.commonNames)
+    function splitString(inputString: string): void {
+      const [f, ...rest] = inputString.split(" ");
+      family = f;
+      species = rest.join(" ");
+    }
+    splitString(scientificName);
 
     //request data from inaturalist
-    
 
+    //parametic endpoint of /taxa
+    let url = `https://api.inaturalist.org/v1/taxa?q=${family}%20${species}&per_page=1&order=desc&order_by=observations_count`;
+
+    return axios
+      .get(url)
+      .then((response) => {
+        wiki = response.data.results[0].wikipedia_url;
+        commonName = response.data.results[0].preferred_common_name;
+        console.log(wiki, "wiki");
+        console.log(commonName, "common Name");
+        console.log(latPosition, longPosition, "in axios request");
+        console.log(photoUri)
+        console.log(scientificName)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     //posting data into database
-  }
-
-
+  };
 
   return (
     <View style={styles.card}>
-      
+      <Image
+        style={styles.imageMatch}
+        source={{ uri: result.images[0].url.m }}
+      />
 
-
-       <Image style={styles.imageMatch} source={{ uri: result.images[0].url.m}} />
-
-
-     <Text style={styles.subtitle}>{result.score}% accurate</Text>
+      <Text style={styles.subtitle}>{result.score}% accurate</Text>
 
       <Text style={styles.subtitle}>Best Match</Text>
       <Text style={styles.paragraph}>Hello</Text>
@@ -113,7 +119,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "400",
     marginBottom: 12,
-  },imageMatch: {
+  },
+  imageMatch: {
     width: 300,
     height: 200,
     borderRadius: 8,

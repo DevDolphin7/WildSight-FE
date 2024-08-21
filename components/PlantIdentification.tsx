@@ -28,6 +28,7 @@ const PlantIdentification: React.FC<PlantIdentificationProps> = ({
   const [uploading, setUploading] = useState(false);
 
 
+
   const handleSubmit = () => {
     setUploading(true);
 
