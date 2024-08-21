@@ -10,4 +10,10 @@ export type RootStackParamList = {
     latPosition: number;
     longPosition: number;
   }
+  AiResult: {
+    data: any; 
+    latPosition: number;
+    longPosition: number;
+    photoUri: string;
+  };
 };
