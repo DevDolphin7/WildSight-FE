@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, ScrollView, StyleSheet } from "react-native";
-import { useLocalSearchParams } from "expo-router";
-import { getINatObservationById } from "./iNaturalist-api";
+import { getINatObservationById } from "../app/iNaturalist-api";
+import { useRoute } from "@react-navigation/native";
 
-const SingleWildlife = () => {
+export default function SingleWildlife() {
 	const [singleWildlife, setSingleWildlife] = useState({});
-	const { iNatId } = useLocalSearchParams();
-	// we will need to also bring in the sighting_id from any clicked WildSight sightings on the map or in users personal list (see maps.tsx on how to use params in Link and also here for useLocalSearchParams)
+	const route = useRoute();
+	const { iNatId } = route.params;
+	// we will need to also bring in the sighting_id from any clicked WildSight sightings on the map or in users personal list
 
 	useEffect(() => {
 		getINatObservationById(iNatId)
@@ -50,7 +51,7 @@ const SingleWildlife = () => {
 			</View>
 		</ScrollView>
 	);
-};
+}
 
 const styles = StyleSheet.create({
 	container: {
@@ -95,5 +96,3 @@ const styles = StyleSheet.create({
 		margin: 5,
 	},
 });
-
-export default SingleWildlife;
