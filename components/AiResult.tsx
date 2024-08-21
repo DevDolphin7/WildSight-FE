@@ -1,47 +1,59 @@
 import React from "react";
 import { View, Text, ScrollView, StyleSheet, Image } from "react-native";
 import { RouteProp } from "@react-navigation/native";
-import { RootStackParamList } from "../types"; // Adjust path as needed
+import { RootStackParamList } from "../types";
+import { Button } from "react-native";
+import AiSingleResultCard from "./AiSingleResultCard";
 
 interface Species {
-  name?: string;
+  scientificNameWithoutAuthor: string;
+  commonNames: string[];
 }
+
 
 interface ImageDetails {
   url: {
-    o: string;
     m: string;
+    o: string;
     s: string;
   };
+}
+
+
+interface Result {
+  gbif: {
+    id: number;
+  };
+  species: Species;
+  score: number;
+  images: ImageDetails[];
+
+
+
 }
 
 type AiResultRouteProp = RouteProp<RootStackParamList, "AiResult">;
 
 const AiResult: React.FC<{ route: AiResultRouteProp }> = ({ route }) => {
-  const { data, latPosition, longPosition, photoUri } = route.params;
-
-  console.log(data.results[0]);
-  console.log("results");
+  const { data, photoUri, latPosition, longPosition } = route.params;
+  const { results } = data;
 
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Results</Text>
 
-      <Text style={styles.subtitle}> Your Image</Text>
+      <Text style={styles.subtitle}>Your Image</Text>
       <Image style={styles.image} source={{ uri: photoUri }} />
 
-      <Text style={styles.subtitle}> {data.bestMatch}</Text>
-      <Text style={styles.subtitle}>
-        {" "}
-        Common Name: {data.results[0].species.commonNames}
-      </Text>
+      <Text style={styles.subtitle}>Pick which one is most accurate</Text>
 
-      <Image
-        style={styles.imageMatch}
-        source={{ uri: data.results[0].images[0].url.m }}
-      />
+      <View>
+        {results.map((result: Result) => {
+          return <AiSingleResultCard  result={result} key={result.gbif.id} />;
+        })}
+      </View>
 
-      <Text style={styles.subtitle}>{data.results[0].score}% accurate</Text>
+     
     </ScrollView>
   );
 };
@@ -62,6 +74,12 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginTop: 16,
     marginBottom: 8,
+  },
+  paragraph: {
+    fontSize: 16,
+    fontWeight: "600",
+    marginTop: 8,
+    marginBottom: 4,
   },
   image: {
     width: 400,

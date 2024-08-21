@@ -42,7 +42,7 @@ const PlantIdentification: React.FC<PlantIdentificationProps> = ({
     const project = "all";
     const includeRelatedImages = true;
     const noReject = false;
-    const nbResults = 1;
+    const nbResults = 3;
     const lang = "en";
     const apiKey = "2b107NOh3HG5cNE31rCZUUj0u";
     const url = `https://my-api.plantnet.org/v2/identify/${project}?api-key=${apiKey}&include-related-images=${includeRelatedImages}&no-reject=${noReject}&nb-results=${nbResults}&lang=${lang}`;
@@ -62,8 +62,8 @@ const PlantIdentification: React.FC<PlantIdentificationProps> = ({
         navigation.navigate('AiResult', {data: result, latPosition, longPosition, photoUri})
 
         Alert.alert(
-          "Result",
-          `Plant identification result: ${JSON.stringify(result)}`
+          "We've found some matches",
+          `Choose the wildlife you've sightedkmn`
         );
       })
       .catch((error) => {
