@@ -1,6 +1,8 @@
 import React from "react";
 import { Button, Text, StyleSheet, View, Image } from "react-native";
 import axios from "axios";
+import { postSighting } from "@/api";
+
 
 // Define the Species and Result interfaces to match the structure expected
 interface Species {
@@ -63,15 +65,17 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
       .then((response) => {
         wiki = response.data.results[0].wikipedia_url;
         commonName = response.data.results[0].preferred_common_name;
-        console.log(wiki, "wiki");
-        console.log(commonName, "common Name");
-        console.log(latPosition, longPosition, "in axios request");
-        console.log(photoUri)
-        console.log(scientificName)
+
+
+        return postSighting(latPosition, longPosition, scientificName, commonName, wiki, photoUri).then((response: string) => {
+          console.log(response)
+        })
       })
       .catch((err) => {
         console.log(err);
       });
+
+      
 
     //posting data into database
   };
@@ -86,7 +90,7 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
       <Text style={styles.subtitle}>{result.score}% accurate</Text>
 
       <Text style={styles.subtitle}>Best Match</Text>
-      <Text style={styles.paragraph}>Hello</Text>
+
       <Text style={styles.subtitle}>
         Scientific Name: {result.species.scientificNameWithoutAuthor}
       </Text>
