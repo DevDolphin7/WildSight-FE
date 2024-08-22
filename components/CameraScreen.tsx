@@ -33,7 +33,6 @@ export default function CameraScreen() {
   const cameraRef = useRef<CameraView>(null);
   const navigation = useNavigation<CameraScreenNavigationProp>();
 
-  console.log(latPosition, "camera screen")
   useEffect(() => {
     Location.requestForegroundPermissionsAsync()
       .then(({ status }) => {
@@ -63,7 +62,6 @@ export default function CameraScreen() {
               photoUri: photo.uri,
               latPosition: latPosition,
               longPosition: longPosition,
-              
             });
           } else {
             Alert.alert("Error", "Could not take picture");
