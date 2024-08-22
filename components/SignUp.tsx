@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   ImageBackground,
   View,
@@ -5,26 +6,38 @@ import {
   Button,
   StyleSheet,
 } from "react-native";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
+
+const { validateSignUp } = require("../scripts/utils");
 const backgroundImage = require("../assets/images/home-screen-background.png");
 
 interface FormValues {
-  name: string;
+  [username: string]: string;
   email: string;
   password: string;
 }
 
 export default function SignUp() {
-  const initialValues: FormValues = { name: "", email: "", password: "" };
+  const initialValues: FormValues = { username: "", email: "", password: "" };
+  const [validFormData, setValidFormData] = useState({
+    username: true,
+    email: true,
+    password: true,
+  });
+
+  const validateSubmission = (values: object): void => {
+    const checkValidity = validateSignUp(values);
+    setValidFormData(checkValidity);
+  };
 
   const handleSubmit = (values: FormValues): void => {
-    if (Object.values(values).includes("")) {
-      // Find blank fields and highlight to user
+    const checkValidity = validateSignUp(values);
+    setValidFormData(checkValidity);
+    if (Object.values(checkValidity).includes(false)) {
       return;
     }
-    alert(
-      `Name: ${values.name}\nEmail: ${values.email}\nPassword: ${values.password}`
-    );
+    // Make backend call here when it's hosted!
+    console.log("Make request!")
   };
 
   return (
@@ -33,31 +46,40 @@ export default function SignUp() {
       style={styles.background}
       resizeMode="cover"
     >
-      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+      <Formik initialValues={initialValues} validate={validateSubmission} onSubmit={handleSubmit}>
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <View style={styles.background}>
             <TextInput
-              onChangeText={handleChange("name")}
-              onBlur={handleBlur("name")}
-              placeholder="Name"
-              value={values.name}
-              style={styles.formEntry}
+              onChangeText={handleChange("username")}
+              onBlur={handleBlur("username")}
+              placeholder="Username"
+              value={values.username}
+              style={[
+                styles.formEntry,
+                validFormData.username ? null : styles.invalidFormEntry,
+              ]}
             />
             <TextInput
               onChangeText={handleChange("email")}
               onBlur={handleBlur("email")}
               placeholder="Email"
               value={values.email}
-              style={styles.formEntry}
+              style={[
+                styles.formEntry,
+                validFormData.email ? null : styles.invalidFormEntry,
+              ]}
             />
             <TextInput
               onChangeText={handleChange("password")}
               onBlur={handleBlur("password")}
               placeholder="Password"
               value={values.password}
-              style={styles.formEntry}
+              style={[
+                styles.formEntry,
+                validFormData.password ? null : styles.invalidFormEntry,
+              ]}
             />
-            <Button title="Submit" onPress={() => handleSubmit} />
+            <Button title="Submit" onPress={handleSubmit} />
           </View>
         )}
       </Formik>
@@ -80,7 +102,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
+    marginBottom: 30,
+    paddingLeft: 15,
+    paddingRight: 15,
     borderWidth: 3,
-    borderColor: "red",
+    borderRadius: 20,
+    borderColor: "#21514080",
+    backgroundColor: "#ffd5bd80",
+  },
+  invalidFormEntry: {
+    backgroundColor: "#DD464680",
   },
 });
