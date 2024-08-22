@@ -36,3 +36,29 @@ export const getINatObservationById = (id: number) => {
 			console.log("Error getting unique observation:", error);
 		});
 };
+
+export const getObservIdBySciName = (scientificName: string) => {
+	return inatApi
+		.get(`/observations/?q=${scientificName}&per_page=1`)
+		.then((response) => {
+			return response.data.results[0].id;
+		})
+		.catch((error) => {
+			console.log("Error getting observations by scientific name", error);
+		});
+};
+
+/*to go into AiSingleResultcard
+-----top---
+import {
+	getINatObservationById,
+	getObservIdBySciName,
+} from "@/app/iNaturalist-api";
+----in handleSubmit function----
+		getObservIdBySciName(scientificName).then((iNatId) => {
+			console.log(iNatId);
+			getINatObservationById(iNatId).then((observation) => {
+				console.log(observation.taxon.wikipedia_summary);
+			});
+		});
+*/
