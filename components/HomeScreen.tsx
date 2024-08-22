@@ -1,6 +1,14 @@
 import { useRef } from "react";
-import { View, Image, Button, StyleSheet } from "react-native";
+import {
+  View,
+  Image,
+  Button,
+  StyleSheet,
+  ScrollView,
+  Text,
+} from "react-native";
 import PagerView from "react-native-pager-view";
+import HealthAndSafetyText from "./HealthAndSafetyText";
 
 type Props = {
   setSignUpOpen(params: boolean): void;
@@ -34,12 +42,15 @@ export default function HomeScreen(props: Props) {
       </View>
       <View style={styles.background} key="2">
         <View style={styles.page}>
-          <Button
-            title="<- Page 2 ->"
-            onPress={() => {
-              ref.current?.setPage(2);
-            }}
-          ></Button>
+          <ScrollView>
+            <HealthAndSafetyText />
+            <Button
+              title="<- Page 2 ->"
+              onPress={() => {
+                ref.current?.setPage(2);
+              }}
+            ></Button>
+          </ScrollView>
         </View>
       </View>
       <View style={styles.background} key="3">
