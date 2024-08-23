@@ -4,28 +4,40 @@ import {
   View,
   TextInput,
   Button,
+  Alert,
   StyleSheet,
 } from "react-native";
-import { Formik, FormikHelpers } from "formik";
+import { Formik } from "formik";
+import axios from "axios";
 
 const { validateSignUp } = require("../scripts/utils");
 const backgroundImage = require("../assets/images/home-screen-background.png");
 
+type Props = {
+  setSignUpOpen(params: boolean): void;
+};
+
 interface FormValues {
-  [username: string]: string;
+  username: string;
   email: string;
   password: string;
 }
 
-export default function SignUp() {
-  const initialValues: FormValues = { username: "", email: "", password: "" };
+export default function SignUp(props: Props) {
+  const { setSignUpOpen } = props;
+  const initialValues: FormValues = {
+    username: "",
+    email: "",
+    password: "",
+  };
   const [validFormData, setValidFormData] = useState({
     username: true,
     email: true,
     password: true,
   });
+  const [userCreated, setUserCreated] = useState(false);
 
-  const validateSubmission = (values: object): void => {
+  const validateSubmission = (values: FormValues): void => {
     const checkValidity = validateSignUp(values);
     setValidFormData(checkValidity);
   };
@@ -36,8 +48,24 @@ export default function SignUp() {
     if (Object.values(checkValidity).includes(false)) {
       return;
     }
-    // Make backend call here when it's hosted!
-    console.log("Make request!")
+    axios
+      .post("https://wildside-be.onrender.com/api/users/", values)
+      .then(() => {
+        Alert.alert(
+          `Welcome ${values.username}!`,
+          "Please enjoy using this app responsibly to engage with your surrounding wildlife!\n\nTo find out more, swipe left on the home screen.",
+          [
+            {
+              text: "Got it",
+              onPress: () => setSignUpOpen(false),
+              style: "default",
+            },
+          ]
+        );
+      })
+      .catch((error) => {
+        alert(error);
+      });
   };
 
   return (
@@ -46,7 +74,11 @@ export default function SignUp() {
       style={styles.background}
       resizeMode="cover"
     >
-      <Formik initialValues={initialValues} validate={validateSubmission} onSubmit={handleSubmit}>
+      <Formik
+        initialValues={initialValues}
+        validate={validateSubmission}
+        onSubmit={handleSubmit}
+      >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <View style={styles.background}>
             <TextInput
@@ -79,7 +111,7 @@ export default function SignUp() {
                 validFormData.password ? null : styles.invalidFormEntry,
               ]}
             />
-            <Button title="Submit" onPress={handleSubmit} />
+            <Button title="Submit" onPress={handleSubmit as any} />
           </View>
         )}
       </Formik>

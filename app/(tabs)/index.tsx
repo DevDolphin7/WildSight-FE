@@ -19,7 +19,7 @@ export default function Index() {
             setSignUpOpen(false);
           }}
         />
-        <SignUp />
+        <SignUp setSignUpOpen={setSignUpOpen} />
       </Modal>
       <HomeScreen setSignUpOpen={setSignUpOpen} />
     </ImageBackground>
