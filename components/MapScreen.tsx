@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
 import MapView, {
-	PROVIDER_GOOGLE,
 	Heatmap,
 	Marker,
 	Region,
 	Callout,
+	Circle,
 } from "react-native-maps";
-import { StyleSheet, View, Text, Image, Pressable } from "react-native";
+import {
+	StyleSheet,
+	View,
+	Text,
+	Image,
+	Pressable,
+	Platform,
+} from "react-native";
 import * as Location from "expo-location";
 import { getINatObservations } from "@/app/iNaturalist-api";
 import { useNavigation } from "@react-navigation/native";
@@ -78,44 +85,60 @@ export default function MapScreen() {
 	const handleClose = () => {
 		setSelectedMarker(null);
 	};
-
 	return (
 		<View style={styles.container}>
 			{region && (
 				<MapView
-					provider={PROVIDER_GOOGLE}
 					style={styles.map}
 					initialRegion={region}
 					onRegionChangeComplete={handleRegionChangeComplete}
 				>
-					{zoomLevel < 17 ? (
-						<Heatmap
-							radius={30}
-							opacity={1}
-							points={points.map((point) => ({
-								latitude: point.latitude,
-								longitude: point.longitude,
-								weight: point.weight,
-							}))}
-						/>
-					) : (
-						points.map((point, index) => (
-							<Marker
-								key={index}
-								coordinate={{
-									latitude: point.latitude,
-									longitude: point.longitude,
-								}}
-								onPress={() => handleMarkerPress(point)}
-							>
-								<Callout>
-									<View>
-										<Text>{point.species_guess || "Species Unknown"}</Text>
-									</View>
-								</Callout>
-							</Marker>
-						))
-					)}
+{zoomLevel < 17 ? (
+    Platform.OS === "android" ? (
+        <Heatmap
+            radius={30}
+            opacity={1}
+            points={points.map((point) => ({
+                latitude: point.latitude,
+                longitude: point.longitude,
+                weight: point.weight,
+            }))}
+        />
+    ) : (
+        points.map((point, index) => (
+            <Circle
+                key={index}
+                center={{
+                    latitude: point.latitude,
+                    longitude: point.longitude,
+                }}
+                radius={getCircleRadius()} 
+                strokeColor="rgba(255, 0, 0,0.2)"
+                fillColor="rgba(255, 0, 0, 0.5)"
+                strokeWidth={6}
+            />
+        ))
+    )
+) : (
+    points.map((point, index) => (
+        <Marker
+            key={index}
+            coordinate={{
+                latitude: point.latitude,
+                longitude: point.longitude,
+            }}
+            onPress={() => handleMarkerPress(point)}
+        >
+            <Callout>
+                <View>
+                    <Text>{point.species_guess || "Species Unknown"}</Text>
+                </View>
+            </Callout>
+        </Marker>
+    ))
+)}
+
+
 				</MapView>
 			)}
 
