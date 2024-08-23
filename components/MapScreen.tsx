@@ -66,6 +66,13 @@ export default function MapScreen() {
 			.catch((error) => console.error(error));
 	}, [region]);
 
+	const getCircleRadius = (zoomLevel: number) => {
+		if (zoomLevel < 10) return 50;
+		if (zoomLevel < 13) return 30; 
+		if (zoomLevel < 16) return 20; 
+		return 10; 
+	};
+
 	const handleRegionChangeComplete = (newRegion: Region) => {
 		const newZoomLevel =
 			Math.log(
