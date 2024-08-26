@@ -2,10 +2,13 @@ import { useState } from "react";
 import { ImageBackground, StyleSheet, Modal, Button } from "react-native";
 import HomeScreen from "@/components/HomeScreen";
 import SignUp from "@/components/SignUp";
+import Login from "@/components/Login";
 const backgroundImage = require("../../assets/images/home-screen-background.png");
 
 export default function Index() {
   const [signUpOpen, setSignUpOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+
   return (
     <ImageBackground
       source={backgroundImage}
@@ -21,7 +24,16 @@ export default function Index() {
         />
         <SignUp setSignUpOpen={setSignUpOpen} />
       </Modal>
-      <HomeScreen setSignUpOpen={setSignUpOpen} />
+      <Modal visible={loginOpen} animationType="slide">
+        <Button
+          title="close"
+          onPress={() => {
+            setLoginOpen(false);
+          }}
+        />
+        <Login setLoginOpen={setLoginOpen} />
+      </Modal>
+      <HomeScreen setSignUpOpen={setSignUpOpen} setLoginOpen={setLoginOpen} />
     </ImageBackground>
   );
 }
