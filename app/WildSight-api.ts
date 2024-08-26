@@ -20,3 +20,9 @@ export const getSightingById = (sighting_id: number) => {
 		return response.data.sighting;
 	});
 };
+
+export const getFavouritesById = (user_id: number) => {
+	return wildSightApi.get(`/mywildlife/users/${user_id}`).then((response) => {
+		return response.data.wildlife
+	})
+}

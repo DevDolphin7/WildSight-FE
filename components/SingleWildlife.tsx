@@ -36,7 +36,7 @@ export default function SingleWildlife() {
 				)}
 				<Text style={styles.summaryTitle}>Wikipedia Summary:</Text>
 				<Text style={styles.summaryText}>
-					{singleWildlife.taxon?.wikipedia_summary}
+					{singleWildlife.taxon?.wikipedia_summary.replace(/<\/?[^>]+(>|$)/g, "")}
 				</Text>
 				<View style={styles.observationPhotosContainer}>
 					<Text style={styles.photosTitle}>User Photos:</Text>
