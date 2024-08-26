@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import PagerView from "react-native-pager-view";
 import HealthAndSafetyText from "./HealthAndSafetyText";
+import Instructions from "./Instructions";
 
 type Props = {
   setSignUpOpen(params: boolean): void;
@@ -55,12 +56,15 @@ export default function HomeScreen(props: Props) {
       </View>
       <View style={styles.background} key="3">
         <View style={styles.page}>
-          <Button
-            title="<- Go Back ->"
-            onPress={() => {
-              ref.current?.setPage(0);
-            }}
-          ></Button>
+          <ScrollView>
+            <Instructions />
+            <Button
+              title="<- Go Back->"
+              onPress={() => {
+                ref.current?.setPage(0);
+              }}
+            ></Button>
+          </ScrollView>
         </View>
       </View>
     </PagerView>
