@@ -13,10 +13,11 @@ import Instructions from "./Instructions";
 
 type Props = {
   setSignUpOpen(params: boolean): void;
+  setLoginOpen(params: boolean): void;
 };
 
 export default function HomeScreen(props: Props) {
-  const { setSignUpOpen } = props;
+  const { setSignUpOpen, setLoginOpen } = props;
   const ref = useRef<PagerView>(null);
 
   return (
@@ -28,9 +29,15 @@ export default function HomeScreen(props: Props) {
             style={styles.reactLogo}
           />
           <Button
-            title="SignUp"
+            title="Sign Up"
             onPress={() => {
               setSignUpOpen(true);
+            }}
+          ></Button>
+          <Button
+            title="Login"
+            onPress={() => {
+              setLoginOpen(true);
             }}
           ></Button>
           <Button
