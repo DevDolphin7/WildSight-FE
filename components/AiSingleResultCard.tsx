@@ -1,7 +1,5 @@
 import React from "react";
 import { Button, Text, StyleSheet, View, Image } from "react-native";
-import axios from "axios";
-import { postSighting } from "@/api";
 import {
 	getINatObservationById,
 	getObservIdBySciName,
@@ -58,7 +56,7 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
 				const common_name = result.species.commonNames[0];
 				const taxon_name = scientificName;
 				// not actually the wiki url but instead the summary - can change BE column name to wiki summary and update FE too
-				const wikipedia_url = observation.taxon.wikipedia_summary;
+				const wikipedia_url = observation.taxon.wikipedia_summary.replace(/<\/?[^>]+(>|$)/g, "");
 				const userSighting = {
 					uploaded_image,
 					long_position,
