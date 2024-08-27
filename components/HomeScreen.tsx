@@ -50,28 +50,24 @@ export default function HomeScreen(props: Props) {
       </View>
       <View style={styles.background} key="2">
         <View style={styles.page}>
-          <ScrollView>
-            <HealthAndSafetyText />
-            <Button
-              title="<- Page 2 ->"
-              onPress={() => {
-                ref.current?.setPage(2);
-              }}
-            ></Button>
-          </ScrollView>
+          <HealthAndSafetyText />
+          <Button
+            title="<- Page 2 ->"
+            onPress={() => {
+              ref.current?.setPage(2);
+            }}
+          ></Button>
         </View>
       </View>
       <View style={styles.background} key="3">
         <View style={styles.page}>
-          <ScrollView>
-            <Instructions />
-            <Button
-              title="<- Go Back->"
-              onPress={() => {
-                ref.current?.setPage(0);
-              }}
-            ></Button>
-          </ScrollView>
+          <Instructions />
+          <Button
+            title="<- Go Back->"
+            onPress={() => {
+              ref.current?.setPage(0);
+            }}
+          ></Button>
         </View>
       </View>
     </PagerView>
