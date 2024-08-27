@@ -60,6 +60,7 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
 					/<\/?[^>]+(>|$)/g,
 					""
 				);
+
 				const userSighting = {
 					uploaded_image,
 					long_position,

@@ -4,73 +4,51 @@ import {
   View,
   TextInput,
   Button,
-  Alert,
   StyleSheet,
 } from "react-native";
 import { Formik } from "formik";
-import { postUser } from "../api";
 import { LoggedInContext } from "@/contexts/LoggedIn";
 
-const { validateSignUp } = require("../scripts/utils");
+const { validateLogin } = require("../scripts/utils");
 const backgroundImage = require("../assets/images/home-screen-background.png");
 
 type Props = {
-  setSignUpOpen(params: boolean): void;
+  setLoginOpen(params: boolean): void;
 };
 
 interface FormValues {
-  username: string;
-  email: string;
+  usernameOrEmail: string;
   password: string;
 }
 
-interface DataBaseResponse {
-  user_id: string;
-  username: string;
-  email: string;
-}
-
-export default function SignUp(props: Props) {
-  const { setSignUpOpen } = props;
+export default function Login(props: Props) {
+  const { setLoginOpen } = props;
   const initialValues: FormValues = {
-    username: "",
-    email: "",
+    usernameOrEmail: "",
     password: "",
   };
   const [validFormData, setValidFormData] = useState({
-    username: true,
-    email: true,
+    usernameOrEmail: true,
     password: true,
   });
-  const { setLoggedIn } = useContext(LoggedInContext) as any;
+  const { setLoggedIn } = useContext(LoggedInContext);
 
   const validateSubmission = (values: FormValues): void => {
-    const checkValidity = validateSignUp(values);
+    const checkValidity = validateLogin(values);
     setValidFormData(checkValidity);
   };
 
   const handleSubmit = (values: FormValues): void => {
-    const checkValidity = validateSignUp(values);
+    const checkValidity = validateLogin(values);
     setValidFormData(checkValidity);
     if (Object.values(checkValidity).includes(false)) {
       return;
     }
-    postUser(values, handleSuccess);
-  };
-
-  const handleSuccess = (values: FormValues, dbResponse: DataBaseResponse): void => {
-    setLoggedIn(dbResponse.user_id);
-    Alert.alert(
-      `Welcome ${values.username}!`,
-      "Please enjoy using this app responsibly to engage with your surrounding wildlife!\n\nTo find out more, swipe left on the home screen.",
-      [
-        {
-          text: "Got it",
-          onPress: () => setSignUpOpen(false),
-          style: "default",
-        },
-      ]
+    console.log(
+      "Endpoint ticket added for tis functionality https://trello.com/c/WSBuDayD/110-post-users-login"
     );
+    setLoggedIn("Test")
+    setLoginOpen(false);
   };
 
   return (
@@ -87,23 +65,13 @@ export default function SignUp(props: Props) {
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <View style={styles.background}>
             <TextInput
-              onChangeText={handleChange("username")}
-              onBlur={handleBlur("username")}
-              placeholder="Username"
-              value={values.username}
+              onChangeText={handleChange("usernameOrEmail")}
+              onBlur={handleBlur("usernameOrEmail")}
+              placeholder="Username or Email"
+              value={values.usernameOrEmail}
               style={[
                 styles.formEntry,
-                validFormData.username ? null : styles.invalidFormEntry,
-              ]}
-            />
-            <TextInput
-              onChangeText={handleChange("email")}
-              onBlur={handleBlur("email")}
-              placeholder="Email"
-              value={values.email}
-              style={[
-                styles.formEntry,
-                validFormData.email ? null : styles.invalidFormEntry,
+                validFormData.usernameOrEmail ? null : styles.invalidFormEntry,
               ]}
             />
             <TextInput

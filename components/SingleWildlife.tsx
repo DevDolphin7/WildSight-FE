@@ -98,6 +98,7 @@ export default function SingleWildlife() {
 							</View>
 						</View>
 					) : null}
+
 				</View>
 			)}
 		</ScrollView>

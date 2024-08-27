@@ -9,13 +9,15 @@ import {
 } from "react-native";
 import PagerView from "react-native-pager-view";
 import HealthAndSafetyText from "./HealthAndSafetyText";
+import Instructions from "./Instructions";
 
 type Props = {
   setSignUpOpen(params: boolean): void;
+  setLoginOpen(params: boolean): void;
 };
 
 export default function HomeScreen(props: Props) {
-  const { setSignUpOpen } = props;
+  const { setSignUpOpen, setLoginOpen } = props;
   const ref = useRef<PagerView>(null);
 
   return (
@@ -27,9 +29,15 @@ export default function HomeScreen(props: Props) {
             style={styles.reactLogo}
           />
           <Button
-            title="SignUp"
+            title="Sign Up"
             onPress={() => {
               setSignUpOpen(true);
+            }}
+          ></Button>
+          <Button
+            title="Login"
+            onPress={() => {
+              setLoginOpen(true);
             }}
           ></Button>
           <Button
@@ -42,21 +50,20 @@ export default function HomeScreen(props: Props) {
       </View>
       <View style={styles.background} key="2">
         <View style={styles.page}>
-          <ScrollView>
-            <HealthAndSafetyText />
-            <Button
-              title="<- Page 2 ->"
-              onPress={() => {
-                ref.current?.setPage(2);
-              }}
-            ></Button>
-          </ScrollView>
+          <HealthAndSafetyText />
+          <Button
+            title="<- Page 2 ->"
+            onPress={() => {
+              ref.current?.setPage(2);
+            }}
+          ></Button>
         </View>
       </View>
       <View style={styles.background} key="3">
         <View style={styles.page}>
+          <Instructions />
           <Button
-            title="<- Go Back ->"
+            title="<- Go Back->"
             onPress={() => {
               ref.current?.setPage(0);
             }}
