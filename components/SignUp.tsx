@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Formik } from "formik";
-import axios from "axios";
+import { postUser } from "../api";
 
 const { validateSignUp } = require("../scripts/utils");
 const backgroundImage = require("../assets/images/home-screen-background.png");
@@ -35,7 +35,6 @@ export default function SignUp(props: Props) {
     email: true,
     password: true,
   });
-  const [userCreated, setUserCreated] = useState(false);
 
   const validateSubmission = (values: FormValues): void => {
     const checkValidity = validateSignUp(values);
@@ -48,24 +47,21 @@ export default function SignUp(props: Props) {
     if (Object.values(checkValidity).includes(false)) {
       return;
     }
-    axios
-      .post("https://wildside-be.onrender.com/api/users/", values)
-      .then(() => {
-        Alert.alert(
-          `Welcome ${values.username}!`,
-          "Please enjoy using this app responsibly to engage with your surrounding wildlife!\n\nTo find out more, swipe left on the home screen.",
-          [
-            {
-              text: "Got it",
-              onPress: () => setSignUpOpen(false),
-              style: "default",
-            },
-          ]
-        );
-      })
-      .catch((error) => {
-        alert(error);
-      });
+    postUser(values, handleSuccess);
+  };
+
+  const handleSuccess = (values: FormValues): void => {
+    Alert.alert(
+      `Welcome ${values.username}!`,
+      "Please enjoy using this app responsibly to engage with your surrounding wildlife!\n\nTo find out more, swipe left on the home screen.",
+      [
+        {
+          text: "Got it",
+          onPress: () => setSignUpOpen(false),
+          style: "default",
+        },
+      ]
+    );
   };
 
   return (

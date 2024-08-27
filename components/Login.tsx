@@ -4,13 +4,11 @@ import {
   View,
   TextInput,
   Button,
-  Alert,
   StyleSheet,
 } from "react-native";
 import { Formik } from "formik";
-import axios from "axios";
 
-const { validateSignUp, validateLogin } = require("../scripts/utils");
+const { validateLogin } = require("../scripts/utils");
 const backgroundImage = require("../assets/images/home-screen-background.png");
 
 type Props = {
@@ -32,7 +30,6 @@ export default function Login(props: Props) {
     usernameOrEmail: true,
     password: true,
   });
-  const [loggedIn, setLoggedIn] = useState(false);
 
   const validateSubmission = (values: FormValues): void => {
     const checkValidity = validateLogin(values);
@@ -48,6 +45,7 @@ export default function Login(props: Props) {
     console.log(
       "Endpoint ticket added for tis functionality https://trello.com/c/WSBuDayD/110-post-users-login"
     );
+    setLoginOpen(false);
   };
 
   return (
