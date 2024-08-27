@@ -1,14 +1,14 @@
 import React from "react";
 import { Button, Text, StyleSheet, View, Image } from "react-native";
-import axios from "axios";
-import { postSighting } from "@/api";
 import {
 	getINatObservationById,
 	getObservIdBySciName,
 } from "@/app/iNaturalist-api";
-import { addUserSighting, getSightingById } from "@/app/WildSight-api";
+import { addUserSighting } from "@/app/WildSight-api";
+import { useNavigation } from "@react-navigation/native";
 
 // Define the Species and Result interfaces to match the structure expected
+
 interface Species {
 	scientificNameWithoutAuthor: string;
 	commonNames: string[];
@@ -37,28 +37,29 @@ interface AiSingleResultCardProps {
 	latPosition: number;
 	longPosition: number;
 }
-//need to thin about how to bring in user_id via props or context
+
+//User ID in useContext?
 const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
 	result,
 	photoUri,
 	latPosition,
 	longPosition,
 }) => {
+	const navigation = useNavigation();
 	const handleSubmit = () => {
-		// Plant Name back from AI
 		const scientificName = result.species.scientificNameWithoutAuthor;
 		getObservIdBySciName(scientificName).then((iNatId) => {
-			console.log(iNatId);
 			getINatObservationById(iNatId).then((observation) => {
-				console.log(observation.taxon.wikipedia_summary);
-				//how to store images in database? below is a place holder (file path on user's phone) - BLOB/ AWS S3 / Supabase image storage?
 				const uploaded_image = photoUri;
 				const long_position = longPosition;
 				const lat_position = latPosition;
 				const common_name = result.species.commonNames[0];
 				const taxon_name = scientificName;
 				// not actually the wiki url but instead the summary - can change BE column name to wiki summary and update FE too
-				const wikipedia_url = observation.taxon.wikipedia_summary;
+				const wikipedia_url = observation.taxon.wikipedia_summary.replace(
+					/<\/?[^>]+(>|$)/g,
+					""
+				);
 				const userSighting = {
 					uploaded_image,
 					long_position,
@@ -67,15 +68,20 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
 					taxon_name,
 					wikipedia_url,
 				};
+				console.log(userSighting);
 				const user_id = 1;
-				addUserSighting(user_id, userSighting);
-				getSightingById(7).then((response) => {
-					console.log(response);
-				});
+				addUserSighting(user_id, userSighting)
+					.then((response) => {
+						const newSightingId = response.newSighting.sighting_id;
+						navigation.navigate("SingleWildlife", {
+							WildSightSightingId: newSightingId,
+						});
+					})
+					.catch((err) => {
+						console.log(err);
+					});
 			});
 		});
-
-		// 		commonName = response.data.results[0].preferred_common_name;
 	};
 
 	return (
