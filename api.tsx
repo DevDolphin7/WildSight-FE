@@ -40,7 +40,7 @@ export const postSighting = (
 export const postUser = (values: FormValues, handleSuccess: Function): void => {
   axios
     .post("https://wildside-be.onrender.com/api/users/", values)
-    .then(() => handleSuccess(values))
+    .then((response) => handleSuccess(values, response.data.user))
     .catch((error) => {
       alert(error.response.data.message);
     });
