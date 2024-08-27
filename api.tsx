@@ -1,8 +1,13 @@
 import axios from "axios";
 
-interface FormValues {
+interface SignUpFormValues {
   username: string;
   email: string;
+  password: string;
+}
+
+interface LoginFormValues {
+  usernameOrEmail: string;
   password: string;
 }
 
@@ -37,10 +42,25 @@ export const postSighting = (
     });
 };
 
-export const postUser = (values: FormValues, handleSuccess: Function): void => {
+export const postUser = (
+  values: SignUpFormValues,
+  handleSuccess: Function
+): void => {
   axios
     .post("https://wildside-be.onrender.com/api/users/", values)
     .then((response) => handleSuccess(values, response.data.user))
+    .catch((error) => {
+      alert(error.response.data.message);
+    });
+};
+
+export const postLoginAttempt = (
+  values: LoginFormValues,
+  handleSuccess: Function
+): void => {
+  axios
+    .post("https://wildside-be.onrender.com/api/users/login", values)
+    .then((response) => handleSuccess(response.data.user))
     .catch((error) => {
       alert(error.response.data.message);
     });
