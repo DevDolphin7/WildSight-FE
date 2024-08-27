@@ -1,15 +1,9 @@
-import { useRef } from "react";
-import {
-  View,
-  Image,
-  Button,
-  StyleSheet,
-  ScrollView,
-  Text,
-} from "react-native";
+import { useRef, useContext } from "react";
+import { View, Text, Image, Button, StyleSheet } from "react-native";
 import PagerView from "react-native-pager-view";
 import HealthAndSafetyText from "./HealthAndSafetyText";
 import Instructions from "./Instructions";
+import { LoggedInContext } from "@/contexts/LoggedIn";
 
 type Props = {
   setSignUpOpen(params: boolean): void;
@@ -19,6 +13,7 @@ type Props = {
 export default function HomeScreen(props: Props) {
   const { setSignUpOpen, setLoginOpen } = props;
   const ref = useRef<PagerView>(null);
+  const { loggedIn } = useContext(LoggedInContext);
 
   return (
     <PagerView style={styles.background} initialPage={0} ref={ref}>
@@ -28,18 +23,24 @@ export default function HomeScreen(props: Props) {
             source={require("@/assets/images/partial-react-logo.png")}
             style={styles.reactLogo}
           />
-          <Button
-            title="Sign Up"
-            onPress={() => {
-              setSignUpOpen(true);
-            }}
-          ></Button>
-          <Button
-            title="Login"
-            onPress={() => {
-              setLoginOpen(true);
-            }}
-          ></Button>
+          {loggedIn ? (
+            <Text>Welcome {loggedIn.username}!</Text>
+          ) : (
+            <>
+              <Button
+                title="Sign Up"
+                onPress={() => {
+                  setSignUpOpen(true);
+                }}
+              ></Button>
+              <Button
+                title="Login"
+                onPress={() => {
+                  setLoginOpen(true);
+                }}
+              ></Button>
+            </>
+          )}
           <Button
             title="Get Started ->"
             onPress={() => {
