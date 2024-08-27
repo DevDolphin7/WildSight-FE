@@ -26,3 +26,16 @@ export const getFavouritesById = (user_id: number) => {
 		return response.data.wildlife
 	})
 }
+
+export const deleteFavouritesById = (user_id: number, sighting_id: number) => {
+	return wildSightApi.delete(`/mywildlife/${sighting_id}/users/${user_id}`).then((response) => {
+
+		return response.data
+	})
+}
+
+export const addFavouritesById = (user_id: number, sighting_id: number) => {
+	return wildSightApi.post(`/mywildlife/${sighting_id}/users/${user_id}`).then((response) => {
+		return response.data
+	})
+}
