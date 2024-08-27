@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {
   ImageBackground,
   View,
@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Formik } from "formik";
 import { postUser } from "../api";
+import { LoggedInContext } from "@/contexts/LoggedIn";
 
 const { validateSignUp } = require("../scripts/utils");
 const backgroundImage = require("../assets/images/home-screen-background.png");
@@ -23,6 +24,12 @@ interface FormValues {
   password: string;
 }
 
+interface DataBaseResponse {
+  user_id: string;
+  username: string;
+  email: string;
+}
+
 export default function SignUp(props: Props) {
   const { setSignUpOpen } = props;
   const initialValues: FormValues = {
@@ -35,6 +42,7 @@ export default function SignUp(props: Props) {
     email: true,
     password: true,
   });
+  const { setLoggedIn } = useContext(LoggedInContext) as any;
 
   const validateSubmission = (values: FormValues): void => {
     const checkValidity = validateSignUp(values);
@@ -50,7 +58,8 @@ export default function SignUp(props: Props) {
     postUser(values, handleSuccess);
   };
 
-  const handleSuccess = (values: FormValues): void => {
+  const handleSuccess = (values: FormValues, dbResponse: DataBaseResponse): void => {
+    setLoggedIn(dbResponse.user_id);
     Alert.alert(
       `Welcome ${values.username}!`,
       "Please enjoy using this app responsibly to engage with your surrounding wildlife!\n\nTo find out more, swipe left on the home screen.",
