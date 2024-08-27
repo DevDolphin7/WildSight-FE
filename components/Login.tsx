@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {
   ImageBackground,
   View,
@@ -7,6 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Formik } from "formik";
+import { LoggedInContext } from "@/contexts/LoggedIn";
 
 const { validateLogin } = require("../scripts/utils");
 const backgroundImage = require("../assets/images/home-screen-background.png");
@@ -30,6 +31,7 @@ export default function Login(props: Props) {
     usernameOrEmail: true,
     password: true,
   });
+  const { setLoggedIn } = useContext(LoggedInContext);
 
   const validateSubmission = (values: FormValues): void => {
     const checkValidity = validateLogin(values);
@@ -45,6 +47,7 @@ export default function Login(props: Props) {
     console.log(
       "Endpoint ticket added for tis functionality https://trello.com/c/WSBuDayD/110-post-users-login"
     );
+    setLoggedIn("Test")
     setLoginOpen(false);
   };
 
