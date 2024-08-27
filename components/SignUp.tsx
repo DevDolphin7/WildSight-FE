@@ -59,7 +59,7 @@ export default function SignUp(props: Props) {
   };
 
   const handleSuccess = (values: FormValues, dbResponse: DataBaseResponse): void => {
-    setLoggedIn(dbResponse.user_id);
+    setLoggedIn(dbResponse);
     Alert.alert(
       `Welcome ${values.username}!`,
       "Please enjoy using this app responsibly to engage with your surrounding wildlife!\n\nTo find out more, swipe left on the home screen.",
