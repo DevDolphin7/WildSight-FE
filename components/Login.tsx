@@ -7,6 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Formik } from "formik";
+import { postLoginAttempt } from "../api";
 import { LoggedInContext } from "@/contexts/LoggedIn";
 
 const { validateLogin } = require("../scripts/utils");
@@ -19,6 +20,12 @@ type Props = {
 interface FormValues {
   usernameOrEmail: string;
   password: string;
+}
+
+interface DataBaseResponse {
+  user_id: string;
+  username: string;
+  email: string;
 }
 
 export default function Login(props: Props) {
@@ -44,10 +51,11 @@ export default function Login(props: Props) {
     if (Object.values(checkValidity).includes(false)) {
       return;
     }
-    console.log(
-      "Endpoint ticket added for tis functionality https://trello.com/c/WSBuDayD/110-post-users-login"
-    );
-    setLoggedIn("Test")
+    postLoginAttempt(values, handleSuccess)
+  };
+
+  const handleSuccess = (dbResponse: DataBaseResponse) => {
+    setLoggedIn(dbResponse);
     setLoginOpen(false);
   };
 
