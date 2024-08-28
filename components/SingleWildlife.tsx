@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
   fullWidthImage: {
     height: 250,
     marginBottom: 20,
+	borderRadius: 8,
   },
   observerInfo: {
     marginTop: 10,

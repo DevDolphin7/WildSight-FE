@@ -13,7 +13,7 @@ export default function SingleSighting() {
   
     const [favourite, setFavourite] = useState({});
     const [liked, setLiked] = useState(true);
-    const [userId, setUserId] = useState(route.params.sightings.user_id);
+    const [userId, setUserId] = useState(1);
   
     useEffect(() => {
       // Fetch sighting data
