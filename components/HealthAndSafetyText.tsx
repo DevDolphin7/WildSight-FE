@@ -102,11 +102,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "bold",
+    color: "#232325",
     fontSize: 16,
     marginBottom: 5,
   },
   content: {
     fontSize: 14,
+    color: "#232325",
     lineHeight: 20,
   },
 });
