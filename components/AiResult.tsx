@@ -34,16 +34,15 @@ const AiResult: React.FC<{ route: AiResultRouteProp }> = ({ route }) => {
   const { results } = data;
 
   return (
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.title}>AI Matches</Text>
+        <Text style={styles.subtitle1}>
+          Select the option below that looks the closest to add to your
+          sightings
+        </Text>
+        <Image style={styles.image} source={{ uri: photoUri }} />
 
-    <View style={styles.container}>
-      <Text style={styles.title}>AI Matches</Text>
-      <Text style={styles.subtitle1}>
-        Select the option below that looks the closest to add to your sightings
-      </Text>
-      <Image style={styles.image} source={{ uri: photoUri }} />
-
-      
-      <ScrollView>
         <View>
           {results.map((result: Result) => {
             return (
@@ -57,9 +56,8 @@ const AiResult: React.FC<{ route: AiResultRouteProp }> = ({ route }) => {
             );
           })}
         </View>
-      </ScrollView>
-    </View>
-
+      </View>
+    </ScrollView>
   );
 };
 
@@ -87,10 +85,6 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginBottom: 8,
     borderColor: "black",
-
-    marginTop: 16,
-    marginBottom: 8,
-
   },
   paragraph: {
     fontSize: 16,
@@ -99,10 +93,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   image: {
-
     width: "100%",
-
-    width: 400,
     height: 300,
     borderRadius: 8,
   },

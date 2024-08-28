@@ -154,13 +154,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     // borderColor: 1,
     width: 150,
-
     flex: 1,
     flexDirection: "row",
-    backgroundColor: "transparent",
     marginBottom: 64,
     justifyContent: "center",
     alignItems: "flex-end",
   },
-  text: {},
+
+  text: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
 });
