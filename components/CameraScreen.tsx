@@ -109,23 +109,19 @@ export default function CameraScreen() {
 
   return (
     <View style={styles.container}>
-
-      
       <CameraView
         style={styles.camera}
         facing={facing}
         ref={cameraRef}
       ></CameraView>
       <View style={styles.buttonContainer}>
-      <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-        <Text style={styles.text}>Flip Camera</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={takePicture}>
-        <Text style={styles.text}>Take Picture</Text>
-      </TouchableOpacity>
-    </View>
- 
-
+        <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+          <Text style={styles.text}>Flip Camera</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={takePicture}>
+          <Text style={styles.text}>Take Picture</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -134,19 +130,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: 'white'
+    backgroundColor: "white",
   },
   message: {
     textAlign: "center",
     paddingBottom: 10,
   },
   camera: {
-
     width: "100%",
     height: "50%",
   },
   buttonContainer: {
-    
     flexDirection: "row",
     backgroundColor: "transparent",
     justifyContent: "space-between",
@@ -155,10 +149,10 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 12,
     alignSelf: "flex-end",
-    backgroundColor: "#215140",
+    // backgroundColor: "#215140",
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: 1,
+    // borderColor: 1,
     width: 150,
 
     flex: 1,
@@ -168,4 +162,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-end",
   },
-);
+  text: {},
+});
