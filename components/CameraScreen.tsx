@@ -149,10 +149,10 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 12,
     alignSelf: "flex-end",
-    backgroundColor: "#215140",
+    // backgroundColor: "#215140",
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: 1,
+    // borderColor: 1,
     width: 150,
     flex: 1,
     flexDirection: "row",
@@ -160,6 +160,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-end",
   },
+
   text: {
     color: "white",
     fontSize: 18,
