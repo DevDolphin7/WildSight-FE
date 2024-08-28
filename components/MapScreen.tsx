@@ -127,10 +127,13 @@ export default function MapScreen() {
   }, [region]);
 
   const getCircleRadius = (zoomLevel: number) => {
-    if (zoomLevel < 10) return 50;
-    if (zoomLevel < 13) return 30;
-    if (zoomLevel < 16) return 20;
-    return 10;
+    if (zoomLevel >= 18) return 5;
+    if (zoomLevel >= 15) return 20;
+    if (zoomLevel >= 13) return 50;
+    if (zoomLevel >= 10) return 100;
+    if (zoomLevel >= 8) return 200;
+    if (zoomLevel >= 5) return 400;
+    return 800;
   };
 
   const handleRegionChangeComplete = (newRegion: Region) => {
