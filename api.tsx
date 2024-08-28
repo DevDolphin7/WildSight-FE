@@ -50,7 +50,11 @@ export const postUser = (
     .post("https://wildside-be.onrender.com/api/users/", values)
     .then((response) => handleSuccess(values, response.data.user))
     .catch((error) => {
-      alert(error.response.data.message);
+      if (error.response.data.message) {
+        alert(error.response.data.message);
+      } else {
+        alert(error);
+      }
     });
 };
 
