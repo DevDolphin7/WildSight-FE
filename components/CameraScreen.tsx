@@ -30,8 +30,10 @@ export default function CameraScreen() {
     MediaLibrary.usePermissions();
   const cameraRef = useRef<CameraView>(null);
   const navigation = useNavigation<CameraScreenNavigationProp>();
+  const [loading, isLoading] = useState(false);
 
   useEffect(() => {
+    isLoading(true);
     Location.requestForegroundPermissionsAsync()
       .then(({ status }) => {
         if (status !== "granted") {
@@ -107,19 +109,23 @@ export default function CameraScreen() {
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.flipButton}
-            onPress={toggleCameraFacing}
-          >
-            <Text style={styles.flipText}>Flip</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
-            <View style={styles.circleButton} />
-          </TouchableOpacity>
-        </View>
-      </CameraView>
+
+      
+      <CameraView
+        style={styles.camera}
+        facing={facing}
+        ref={cameraRef}
+      ></CameraView>
+      <View style={styles.buttonContainer}>
+      <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+        <Text style={styles.text}>Flip Camera</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={takePicture}>
+        <Text style={styles.text}>Take Picture</Text>
+      </TouchableOpacity>
+    </View>
+ 
+
     </View>
   );
 }
@@ -128,15 +134,33 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    backgroundColor: 'white'
   },
   message: {
     textAlign: "center",
     paddingBottom: 10,
   },
   camera: {
-    flex: 1,
+
+    width: "100%",
+    height: "50%",
   },
   buttonContainer: {
+    
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    justifyContent: "space-between",
+  },
+  button: {
+    margin: 10,
+    padding: 12,
+    alignSelf: "flex-end",
+    backgroundColor: "#215140",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 1,
+    width: 150,
+
     flex: 1,
     flexDirection: "row",
     backgroundColor: "transparent",
@@ -144,27 +168,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "flex-end",
   },
-  captureButton: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  circleButton: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
-    borderWidth: 5,
-    borderColor: "white",
-  },
-  flipButton: {
-    position: "absolute",
-    left: 95,
-    bottom: 25,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  flipText: {
-    fontSize: 20,
-    color: "white",
-  },
-});
+);

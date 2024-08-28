@@ -34,28 +34,32 @@ const AiResult: React.FC<{ route: AiResultRouteProp }> = ({ route }) => {
   const { results } = data;
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>Identification Results</Text>
 
-      <Text style={styles.subtitle}>Your Image</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>AI Matches</Text>
+      <Text style={styles.subtitle1}>
+        Select the option below that looks the closest to add to your sightings
+      </Text>
       <Image style={styles.image} source={{ uri: photoUri }} />
 
-      <Text style={styles.subtitle}>Pick which one is most accurate</Text>
+      
+      <ScrollView>
+        <View>
+          {results.map((result: Result) => {
+            return (
+              <AiSingleResultCard
+                result={result}
+                key={result.gbif?.id}
+                photoUri={photoUri}
+                latPosition={latPosition}
+                longPosition={longPosition}
+              />
+            );
+          })}
+        </View>
+      </ScrollView>
+    </View>
 
-      <View>
-        {results.map((result: Result) => {
-          return (
-            <AiSingleResultCard
-              result={result}
-              key={result.gbif?.id}
-              photoUri={photoUri}
-              latPosition={latPosition}
-              longPosition={longPosition}
-            />
-          );
-        })}
-      </View>
-    </ScrollView>
   );
 };
 
@@ -63,6 +67,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    paddingTop: 8,
     backgroundColor: "#fff",
   },
   title: {
@@ -73,8 +78,19 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 18,
     fontWeight: "600",
+
+    marginTop: 32,
+    marginBottom: 16,
+  },
+  subtitle1: {
+    fontSize: 16,
+    marginTop: 4,
+    marginBottom: 8,
+    borderColor: "black",
+
     marginTop: 16,
     marginBottom: 8,
+
   },
   paragraph: {
     fontSize: 16,
@@ -83,12 +99,16 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   image: {
+
+    width: "100%",
+
     width: 400,
     height: 300,
     borderRadius: 8,
   },
   imageMatch: {
     width: 200,
+
     height: 200,
     borderRadius: 8,
   },

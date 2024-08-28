@@ -13,7 +13,13 @@ import {
 } from "@/app/iNaturalist-api";
 import { addUserSighting } from "@/app/WildSight-api";
 import { useNavigation } from "@react-navigation/native";
+
+import { TouchableOpacity } from "react-native-gesture-handler";
+
+// Define the Species and Result interfaces to match the structure expected
+
 import { LoggedInContext } from "@/contexts/LoggedIn";
+
 
 interface Species {
   scientificNameWithoutAuthor: string;
@@ -53,10 +59,12 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
   const { loggedIn } = useContext(LoggedInContext);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+
   let user_id = 1;
   if (loggedIn !== null) {
     user_id = loggedIn.user_id;
   }
+
 
   const handleSubmit = () => {
     setLoading(true);
@@ -71,7 +79,7 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
         // not actually the wiki url but instead the summary - can change BE column name to wiki summary and update FE too
         const wikipedia_url = observation.taxon.wikipedia_summary.replace(
           /<\/?[^>]+(>|$)/g,
-          ""
+        
         );
 
         const userSighting = {
@@ -100,14 +108,27 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
 
   return (
     <View style={styles.card}>
+      <Text style={styles.cardtitle}>Scientific Name</Text>
+      <Text style={styles.cardtitle1}>
+        {result.species.scientificNameWithoutAuthor}
+      </Text>
+      <Text style={styles.cardsubtitle}>
+        {(result.score * 100).toFixed(0)}% accurate
+      </Text>
+
       <Image
         style={styles.imageMatch}
         source={{ uri: result.images[0].url.m }}
       />
 
-      <Text style={styles.subtitle}>
-        {(result.score * 100).toFixed(0)}% accurate
-      </Text>
+      <Text style={styles.text}>Also called</Text>
+      <Text style={styles.text1}>{result.species.commonNames.join(", ")}</Text>
+
+
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+
+        <Text style={styles.select}>Select</Text>
+      </TouchableOpacity>
 
       <Text style={styles.subtitle}>
         Scientific Name: {result.species.scientificNameWithoutAuthor}
@@ -125,18 +146,16 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
           onPress={handleSubmit}
         />
       )}
+
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
-    padding: 16,
-    backgroundColor: "#f9f9f9",
     marginBottom: 16,
+	marginTop: 16,
     borderRadius: 8,
-    borderWidth: 1,
-    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -153,9 +172,52 @@ const styles = StyleSheet.create({
   },
   imageMatch: {
     width: "100%",
-    height: 300,
+    height: 200,
     borderRadius: 8,
   },
+  cardtitle: {
+    fontSize: 20,
+    fontWeight: "600",
+  },
+  cardsubtitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    paddingTop: 4,
+    paddingBottom: 4,
+    textAlign: "right",
+  },
+  cardsubtitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    paddingTop: 4,
+    paddingBottom: 4,
+    textAlign: "right",
+  },
+  text: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  text1: {
+    fontSize: 16,
+  },
+  containerButton: {},
+  button: {
+    width: "100%",
+	alignSelf: "flex-end",
+
+
+    padding: 12,
+
+    alignContent: "center",
+    backgroundColor: "#215140",
+    borderRadius: 8,
+	alignItems: "center"
+  },
+  select: {
+	fontSize: 24,
+    fontWeight: "bold",
+    color: "white",
+  }
 });
 
 export default AiSingleResultCard;
