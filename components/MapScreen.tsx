@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import MapView, {
   Heatmap,
   Marker,
@@ -14,14 +14,22 @@ import {
   Pressable,
   Platform,
   Alert,
+  Modal,
+  TouchableOpacity,
 } from "react-native";
 import * as Location from "expo-location";
 import { getINatObservations } from "@/app/iNaturalist-api";
 import { useNavigation } from "@react-navigation/native";
 import { getSightingsByUserId } from "@/app/WildSight-api";
+import { LoggedInContext } from "@/contexts/LoggedIn";
 
 export default function MapScreen() {
-  const user_id = 1;
+  const { loggedIn } = useContext(LoggedInContext);
+
+  let user_id = 1;
+  if (loggedIn !== null) {
+    user_id = loggedIn.user_id;
+  }
   const [points, setPoints] = useState([
     { latitude: 50.2025577053117, longitude: -5.140539490248174, weight: 1 },
   ]);
@@ -30,8 +38,8 @@ export default function MapScreen() {
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [userSightings, setUserSightings] = useState([]);
   const [showUserSightings, setShowUserSightings] = useState(false);
-
   const [isLoading, setIsLoading] = useState(true);
+  const [showPopup, setShowPopup] = useState(true);
 
   const navigation = useNavigation();
 
@@ -60,7 +68,7 @@ export default function MapScreen() {
 
   useEffect(() => {
     if (!region) return;
-
+    console.log(user_id);
     const nelat = region.latitude + region.latitudeDelta / 2;
     const nelng = region.longitude + region.longitudeDelta / 2;
     const swlat = region.latitude - region.latitudeDelta / 2;
@@ -154,6 +162,10 @@ export default function MapScreen() {
     setSelectedMarker(null);
   };
 
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
   return (
     <View style={styles.container}>
       {isLoading && (
@@ -161,6 +173,46 @@ export default function MapScreen() {
           <Text style={styles.loadingText}>Loading...</Text>
         </View>
       )}
+
+      {showPopup && (
+        <Modal transparent={true} visible={showPopup} animationType="fade">
+          <View style={styles.popupContainer}>
+            <View style={styles.popupContent}>
+              <TouchableOpacity
+                onPress={handleClosePopup}
+                style={styles.closeButtonPopup}
+              >
+                <Text style={styles.closeButtonTextPopup}>X</Text>
+              </TouchableOpacity>
+              <Text style={styles.popupHeadingTop}>Wildlife Sightings Map</Text>
+              <Text style={styles.popupText}>
+                This map showcases wildlife sightings in your area. The heatmap
+                indicates regions with higher concentrations of sightings.
+              </Text>
+              <Text style={styles.popupHeading}>
+                Explore Individual Sightings
+              </Text>
+              <Text style={styles.popupText}>
+                You can zoom in to explore individual sightings and learn more
+                about various plants and animals.
+              </Text>
+              <Text style={styles.popupHeading}>Toggle Your Sightings</Text>
+              <Text style={styles.popupText}>
+                Additionally, you can toggle the map to display only your
+                personal sightings.
+              </Text>
+            </View>
+          </View>
+        </Modal>
+      )}
+
+      <TouchableOpacity
+        style={styles.infoButton}
+        onPress={() => setShowPopup(true)}
+      >
+        <Text style={styles.infoButtonText}>i</Text>
+      </TouchableOpacity>
+
       <Pressable
         style={styles.toggleButton}
         onPress={() => setShowUserSightings(!showUserSightings)}
@@ -277,8 +329,8 @@ const styles = StyleSheet.create({
   toggleButton: {
     position: "absolute",
     top: 50,
-    left: 10,
-    backgroundColor: "green",
+    left: 70,
+    backgroundColor: "#215140",
     paddingVertical: 5,
     paddingHorizontal: 15,
     borderRadius: 5,
@@ -322,7 +374,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   button: {
-    backgroundColor: "green",
+    backgroundColor: "#215140",
     paddingVertical: 5,
     paddingHorizontal: 10,
     marginTop: 10,
@@ -344,6 +396,72 @@ const styles = StyleSheet.create({
   loadingText: {
     color: "white",
     fontSize: 14,
+    fontWeight: "bold",
+  },
+  popupContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  popupContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    width: "80%",
+    position: "relative",
+  },
+  closeButtonPopup: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    backgroundColor: "#d6d6d6",
+    borderRadius: 15,
+    width: 30,
+    height: 30,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  closeButtonTextPopup: {
+    color: "white",
+    fontSize: 14,
+  },
+  popupHeadingTop: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "center",
+    color: "#232325",
+  },
+  popupHeading: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 8,
+    textAlign: "center",
+    color: "#232325",
+  },
+  popupText: {
+    fontSize: 14,
+    marginBottom: 8,
+    textAlign: "center",
+    color: "#232325",
+  },
+
+  infoButton: {
+    position: "absolute",
+    top: 50,
+    left: 20,
+    backgroundColor: "#215140",
+    borderRadius: 18,
+    width: 36,
+    height: 36,
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 1,
+  },
+  infoButtonText: {
+    color: "white",
+    fontSize: 16,
     fontWeight: "bold",
   },
 });
