@@ -13,8 +13,7 @@ import {
 } from "@/app/iNaturalist-api";
 import { addUserSighting } from "@/app/WildSight-api";
 import { useNavigation } from "@react-navigation/native";
-
-// Define the Species and Result interfaces to match the structure expected
+import { LoggedInContext } from "@/contexts/LoggedIn";
 
 interface Species {
   scientificNameWithoutAuthor: string;
@@ -45,15 +44,20 @@ interface AiSingleResultCardProps {
   longPosition: number;
 }
 
-//User ID in useContext?
 const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
   result,
   photoUri,
   latPosition,
   longPosition,
 }) => {
+  const { loggedIn } = useContext(LoggedInContext);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+  let user_id = 1;
+  if (loggedIn !== null) {
+    user_id = loggedIn.user_id;
+  }
+
   const handleSubmit = () => {
     setLoading(true);
     const scientificName = result.species.scientificNameWithoutAuthor;
@@ -79,7 +83,6 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
           wikipedia_url,
         };
         console.log(userSighting);
-        const user_id = 1;
         addUserSighting(user_id, userSighting)
           .then((response) => {
             setLoading(false);
