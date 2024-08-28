@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, ScrollView, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Button,
+} from "react-native";
 import { getINatObservationById } from "../app/iNaturalist-api";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 import { getSightingById } from "@/app/WildSight-api";
 
 export default function SingleWildlife() {
@@ -9,6 +16,7 @@ export default function SingleWildlife() {
   const [loading, setLoading] = useState(true);
   const route = useRoute();
   const { iNatId, WildSightSightingId } = route.params;
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (iNatId) {
@@ -29,6 +37,10 @@ export default function SingleWildlife() {
       setLoading(false);
     }
   }, [iNatId, WildSightSightingId]);
+
+  const handleNavigateToExplore = () => {
+    navigation.navigate("explore");
+  };
 
   return (
     <View style={styles.container}>
@@ -111,6 +123,11 @@ export default function SingleWildlife() {
           )}
         </ScrollView>
       )}
+      <Button
+        title="Go to My Wildlife"
+        onPress={handleNavigateToExplore}
+        color="#215140"
+      />
     </View>
   );
 }

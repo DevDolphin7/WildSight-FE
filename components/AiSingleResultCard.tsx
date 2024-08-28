@@ -1,5 +1,12 @@
-import React from "react";
-import { Button, Text, StyleSheet, View, Image } from "react-native";
+import React, { useState } from "react";
+import {
+  Button,
+  Text,
+  StyleSheet,
+  View,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import {
   getINatObservationById,
   getObservIdBySciName,
@@ -45,8 +52,10 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
   latPosition,
   longPosition,
 }) => {
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const handleSubmit = () => {
+    setLoading(true);
     const scientificName = result.species.scientificNameWithoutAuthor;
     getObservIdBySciName(scientificName).then((iNatId) => {
       getINatObservationById(iNatId).then((observation) => {
@@ -73,6 +82,7 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
         const user_id = 1;
         addUserSighting(user_id, userSighting)
           .then((response) => {
+            setLoading(false);
             const newSightingId = response.newSighting.sighting_id;
             navigation.navigate("SingleWildlife", {
               WildSightSightingId: newSightingId,
@@ -96,15 +106,22 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
         {(result.score * 100).toFixed(0)}% accurate
       </Text>
 
-      {/* <Text style={styles.subtitle}>Best Match</Text> */}
-
       <Text style={styles.subtitle}>
         Scientific Name: {result.species.scientificNameWithoutAuthor}
       </Text>
       <Text style={styles.subtitle}>
         Also called: {result.species.commonNames.join(", ")}
       </Text>
-      <Button title="Use This One" onPress={handleSubmit} />
+
+      {loading ? (
+        <ActivityIndicator size="large" color="#215140" />
+      ) : (
+        <Button
+          color="#215140"
+          title="Add to My Sightings"
+          onPress={handleSubmit}
+        />
+      )}
     </View>
   );
 };
