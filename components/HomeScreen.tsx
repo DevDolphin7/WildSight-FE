@@ -13,7 +13,7 @@ type Props = {
 export default function HomeScreen(props: Props) {
   const { setSignUpOpen, setLoginOpen } = props;
   const ref = useRef<PagerView>(null);
-  const { loggedIn } = useContext(LoggedInContext);
+  const { loggedIn, setLoggedIn } = useContext(LoggedInContext);
 
   return (
     <PagerView style={styles.background} initialPage={0} ref={ref}>
@@ -24,7 +24,15 @@ export default function HomeScreen(props: Props) {
             style={styles.reactLogo}
           />
           {loggedIn ? (
-            <Text>Welcome {loggedIn.username}!</Text>
+            <>
+              <Text>Welcome {loggedIn.username}!</Text>
+              <Button
+                title="Log out"
+                onPress={() => {
+                  setLoggedIn(null);
+                }}
+              />
+            </>
           ) : (
             <>
               <Button
@@ -32,13 +40,13 @@ export default function HomeScreen(props: Props) {
                 onPress={() => {
                   setSignUpOpen(true);
                 }}
-              ></Button>
+              />
               <Button
                 title="Login"
                 onPress={() => {
                   setLoginOpen(true);
                 }}
-              ></Button>
+              />
             </>
           )}
           <Button
@@ -46,7 +54,7 @@ export default function HomeScreen(props: Props) {
             onPress={() => {
               ref.current?.setPage(1);
             }}
-          ></Button>
+          />
         </View>
       </View>
       <View style={styles.background} key="2">
@@ -57,7 +65,7 @@ export default function HomeScreen(props: Props) {
             onPress={() => {
               ref.current?.setPage(2);
             }}
-          ></Button>
+          />
         </View>
       </View>
       <View style={styles.background} key="3">
@@ -68,7 +76,7 @@ export default function HomeScreen(props: Props) {
             onPress={() => {
               ref.current?.setPage(0);
             }}
-          ></Button>
+          />
         </View>
       </View>
     </PagerView>

@@ -1,14 +1,25 @@
-import React from "react";
-import { Button, Text, StyleSheet, View, Image } from "react-native";
+import React, { useState } from "react";
+import {
+  Button,
+  Text,
+  StyleSheet,
+  View,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import {
   getINatObservationById,
   getObservIdBySciName,
 } from "@/app/iNaturalist-api";
 import { addUserSighting } from "@/app/WildSight-api";
 import { useNavigation } from "@react-navigation/native";
+
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 // Define the Species and Result interfaces to match the structure expected
+
+import { LoggedInContext } from "@/contexts/LoggedIn";
+
 
 interface Species {
   scientificNameWithoutAuthor: string;
@@ -39,16 +50,24 @@ interface AiSingleResultCardProps {
   longPosition: number;
 }
 
-//User ID in useContext?
 const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
   result,
   photoUri,
   latPosition,
   longPosition,
 }) => {
+  const { loggedIn } = useContext(LoggedInContext);
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
+  let user_id = 1;
+  if (loggedIn !== null) {
+    user_id = loggedIn.user_id;
+  }
+
+
   const handleSubmit = () => {
+    setLoading(true);
     const scientificName = result.species.scientificNameWithoutAuthor;
     getObservIdBySciName(scientificName).then((iNatId) => {
       getINatObservationById(iNatId).then((observation) => {
@@ -72,9 +91,9 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
           wikipedia_url,
         };
         console.log(userSighting);
-        const user_id = 1;
         addUserSighting(user_id, userSighting)
           .then((response) => {
+            setLoading(false);
             const newSightingId = response.newSighting.sighting_id;
             navigation.navigate("SingleWildlife", {
               WildSightSightingId: newSightingId,
@@ -105,10 +124,29 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
       <Text style={styles.text}>Also called</Text>
       <Text style={styles.text1}>{result.species.commonNames.join(", ")}</Text>
 
+
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
 
         <Text style={styles.select}>Select</Text>
       </TouchableOpacity>
+
+      <Text style={styles.subtitle}>
+        Scientific Name: {result.species.scientificNameWithoutAuthor}
+      </Text>
+      <Text style={styles.subtitle}>
+        Also called: {result.species.commonNames.join(", ")}
+      </Text>
+
+      {loading ? (
+        <ActivityIndicator size="large" color="#215140" />
+      ) : (
+        <Button
+          color="#215140"
+          title="Add to My Sightings"
+          onPress={handleSubmit}
+        />
+      )}
+
     </View>
   );
 };

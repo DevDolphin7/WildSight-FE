@@ -34,6 +34,7 @@ const AiResult: React.FC<{ route: AiResultRouteProp }> = ({ route }) => {
   const { results } = data;
 
   return (
+
     <View style={styles.container}>
       <Text style={styles.title}>AI Matches</Text>
       <Text style={styles.subtitle1}>
@@ -58,6 +59,7 @@ const AiResult: React.FC<{ route: AiResultRouteProp }> = ({ route }) => {
         </View>
       </ScrollView>
     </View>
+
   );
 };
 
@@ -69,12 +71,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   title: {
-    fontSize: 22,
+    fontSize: 24,
     fontWeight: "bold",
+    marginBottom: 16,
   },
   subtitle: {
     fontSize: 18,
     fontWeight: "600",
+
     marginTop: 32,
     marginBottom: 16,
   },
@@ -83,6 +87,10 @@ const styles = StyleSheet.create({
     marginTop: 4,
     marginBottom: 8,
     borderColor: "black",
+
+    marginTop: 16,
+    marginBottom: 8,
+
   },
   paragraph: {
     fontSize: 16,
@@ -91,7 +99,16 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   image: {
+
     width: "100%",
+
+    width: 400,
+    height: 300,
+    borderRadius: 8,
+  },
+  imageMatch: {
+    width: 200,
+
     height: 200,
     borderRadius: 8,
   },

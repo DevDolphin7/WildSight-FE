@@ -26,10 +26,8 @@ export default function CameraScreen() {
   const [latPosition, setLatPosition] = useState(0);
   const [longPosition, setLongPosition] = useState(0);
   const [photoUri, setPhotoUri] = useState<string>("");
-  const [
-    mediaLibraryPermission,
-    requestMediaLibraryPermission,
-  ] = MediaLibrary.usePermissions();
+  const [mediaLibraryPermission, requestMediaLibraryPermission] =
+    MediaLibrary.usePermissions();
   const cameraRef = useRef<CameraView>(null);
   const navigation = useNavigation<CameraScreenNavigationProp>();
   const [loading, isLoading] = useState(false);
@@ -111,6 +109,7 @@ export default function CameraScreen() {
 
   return (
     <View style={styles.container}>
+
       
       <CameraView
         style={styles.camera}
@@ -125,7 +124,8 @@ export default function CameraScreen() {
         <Text style={styles.text}>Take Picture</Text>
       </TouchableOpacity>
     </View>
-      
+ 
+
     </View>
   );
 }
@@ -160,10 +160,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 1,
     width: 150,
+
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    marginBottom: 64,
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
-  text: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
-  },
-});
+);
