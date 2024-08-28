@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   View,
   Text,
@@ -7,16 +7,29 @@ import {
   StyleSheet,
   Button,
 } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
+import {
+  getSightingById,
+  addFavouritesById,
+  deleteFavouritesById,
+} from "../app/WildSight-api";
 import { getINatObservationById } from "../app/iNaturalist-api";
 import { useRoute, useNavigation } from "@react-navigation/native";
-import { getSightingById } from "@/app/WildSight-api";
+import { LoggedInContext } from "@/contexts/LoggedIn";
 
 export default function SingleWildlife() {
   const [singleWildlife, setSingleWildlife] = useState({});
   const [loading, setLoading] = useState(true);
+  const [isFavorite, setIsFavorite] = useState(false);
   const route = useRoute();
   const { iNatId, WildSightSightingId } = route.params;
   const navigation = useNavigation();
+  const { loggedIn } = useContext(LoggedInContext);
+
+  let user_id = 1;
+  if (loggedIn !== null) {
+    user_id = loggedIn.user_id;
+  }
 
   useEffect(() => {
     if (iNatId) {
@@ -42,6 +55,18 @@ export default function SingleWildlife() {
     navigation.navigate("explore");
   };
 
+  const handleFavorite = () => {
+    if (isFavorite) {
+      deleteFavouritesById(user_id, WildSightSightingId || iNatId)
+        .then(() => setIsFavorite(false))
+        .catch((error) => console.error("Error removing favorite:", error));
+    } else {
+      addFavouritesById(user_id, WildSightSightingId || iNatId)
+        .then(() => setIsFavorite(true))
+        .catch((error) => console.error("Error adding to favorites:", error));
+    }
+  };
+
   return (
     <View style={styles.container}>
       {loading ? (
@@ -58,10 +83,22 @@ export default function SingleWildlife() {
             <View>
               {WildSightSightingId ? (
                 <View>
-                  <Text style={styles.speciesGuess}>
-                    {singleWildlife?.common_name}
+                  <View style={styles.headerContainer}>
+                    <Text style={styles.speciesGuess}>
+                      {singleWildlife?.common_name}
+                    </Text>
+                    {/* Show heart icon only for WildSightSightingId */}
+                    <Icon
+                      name="heart"
+                      size={28}
+                      color={isFavorite ? "red" : "grey"}
+                      onPress={handleFavorite}
+                      style={styles.heartIcon}
+                    />
+                  </View>
+                  <Text style={styles.observerInfo}>
+                    User ID: {singleWildlife?.user_id}
                   </Text>
-                  <Text style={styles.observerInfo}>User ID: {}</Text>
                   <Image
                     source={{
                       uri: singleWildlife?.uploaded_image,
@@ -147,9 +184,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "gray",
   },
+  headerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
+  },
   speciesGuess: {
     fontSize: 28,
     fontWeight: "bold",
+  },
+  heartIcon: {
+    marginLeft: 10,
   },
   fullWidthImage: {
     height: 250,
