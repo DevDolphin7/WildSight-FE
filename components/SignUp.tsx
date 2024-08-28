@@ -10,6 +10,7 @@ import {
 import { Formik } from "formik";
 import { postUser } from "../api";
 import { LoggedInContext } from "@/contexts/LoggedIn";
+import CryptoES from "crypto-es";
 
 const { validateSignUp } = require("../scripts/utils");
 const backgroundImage = require("../assets/images/home-screen-background.png");
@@ -55,10 +56,20 @@ export default function SignUp(props: Props) {
     if (Object.values(checkValidity).includes(false)) {
       return;
     }
-    postUser(values, handleSuccess);
+    encryptThenPostUser(values);
   };
 
-  const handleSuccess = (values: FormValues, dbResponse: DataBaseResponse): void => {
+  const encryptThenPostUser = (values: FormValues) => {
+    const encryptedValues = JSON.parse(JSON.stringify(values))
+    encryptedValues.password = CryptoES.SHA256(encryptedValues.password).toString()
+    console.log(encryptedValues)
+    postUser(encryptedValues, handleSuccess);
+  };
+
+  const handleSuccess = (
+    values: FormValues,
+    dbResponse: DataBaseResponse
+  ): void => {
     setLoggedIn(dbResponse);
     Alert.alert(
       `Welcome ${values.username}!`,
