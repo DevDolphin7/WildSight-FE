@@ -10,6 +10,7 @@ import {
 import { Formik } from "formik";
 import { postUser } from "../api";
 import { LoggedInContext } from "@/contexts/LoggedIn";
+import FormGuidance from "./FormGuidance";
 import CryptoES from "crypto-es";
 
 const { validateSignUp } = require("../scripts/utils");
@@ -45,9 +46,19 @@ export default function SignUp(props: Props) {
   });
   const { setLoggedIn } = useContext(LoggedInContext) as any;
 
-  const validateSubmission = (values: FormValues): void => {
-    const checkValidity = validateSignUp(values);
-    setValidFormData(checkValidity);
+  const validateInput = (
+    values: FormValues,
+    formikHandler: Function,
+    property: string,
+    value: String
+  ): void => {
+    const currentvalidity = JSON.parse(JSON.stringify(validFormData));
+    const currentValues = JSON.parse(JSON.stringify(values));
+    currentValues[property] = value;
+    const checkValidity = validateSignUp(currentValues);
+    currentvalidity[property] = checkValidity[property];
+    setValidFormData(currentvalidity);
+    formikHandler(property)(value);
   };
 
   const handleSubmit = (values: FormValues): void => {
@@ -60,9 +71,10 @@ export default function SignUp(props: Props) {
   };
 
   const encryptThenPostUser = (values: FormValues) => {
-    const encryptedValues = JSON.parse(JSON.stringify(values))
-    encryptedValues.password = CryptoES.SHA256(encryptedValues.password).toString()
-    console.log(encryptedValues)
+    const encryptedValues = JSON.parse(JSON.stringify(values));
+    encryptedValues.password = CryptoES.SHA256(
+      encryptedValues.password
+    ).toString();
     postUser(encryptedValues, handleSuccess);
   };
 
@@ -90,43 +102,58 @@ export default function SignUp(props: Props) {
       style={styles.background}
       resizeMode="cover"
     >
-      <Formik
-        initialValues={initialValues}
-        validate={validateSubmission}
-        onSubmit={handleSubmit}
-      >
+      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <View style={styles.background}>
-            <TextInput
-              onChangeText={handleChange("username")}
-              onBlur={handleBlur("username")}
-              placeholder="Username"
-              value={values.username}
-              style={[
-                styles.formEntry,
-                validFormData.username ? null : styles.invalidFormEntry,
-              ]}
-            />
-            <TextInput
-              onChangeText={handleChange("email")}
-              onBlur={handleBlur("email")}
-              placeholder="Email"
-              value={values.email}
-              style={[
-                styles.formEntry,
-                validFormData.email ? null : styles.invalidFormEntry,
-              ]}
-            />
-            <TextInput
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
-              placeholder="Password"
-              value={values.password}
-              style={[
-                styles.formEntry,
-                validFormData.password ? null : styles.invalidFormEntry,
-              ]}
-            />
+            <View style={styles.inputAndGuidance}>
+              <TextInput
+                onChangeText={(value) =>
+                  validateInput(values, handleChange, "username", value)
+                }
+                onBlur={handleBlur("username")}
+                placeholder="Username"
+                value={values.username}
+                style={[
+                  styles.formEntry,
+                  validFormData.username ? null : styles.invalidFormEntry,
+                ]}
+              />
+              {!validFormData.username && (
+                <FormGuidance guidance={"username"} />
+              )}
+            </View>
+            <View style={styles.inputAndGuidance}>
+              <TextInput
+                onChangeText={(value) =>
+                  validateInput(values, handleChange, "email", value)
+                }
+                onBlur={handleBlur("email")}
+                placeholder="Email"
+                value={values.email}
+                style={[
+                  styles.formEntry,
+                  validFormData.email ? null : styles.invalidFormEntry,
+                ]}
+              />
+              {!validFormData.email && <FormGuidance guidance={"email"} />}
+            </View>
+            <View style={styles.inputAndGuidance}>
+              <TextInput
+                onChangeText={(value) =>
+                  validateInput(values, handleChange, "password", value)
+                }
+                onBlur={handleBlur("password")}
+                placeholder="Password"
+                value={values.password}
+                style={[
+                  styles.formEntry,
+                  validFormData.password ? null : styles.invalidFormEntry,
+                ]}
+              />
+              {!validFormData.password && (
+                <FormGuidance guidance={"password"} />
+              )}
+            </View>
             <Button title="Submit" onPress={handleSubmit as any} />
           </View>
         )}
@@ -150,13 +177,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
-    marginBottom: 30,
+    marginTop: 30,
+    marginBottom: 10,
     paddingLeft: 15,
     paddingRight: 15,
     borderWidth: 3,
     borderRadius: 20,
     borderColor: "#21514080",
     backgroundColor: "#ffd5bd80",
+  },
+  inputAndGuidance: {
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
   },
   invalidFormEntry: {
     backgroundColor: "#DD464680",
