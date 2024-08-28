@@ -13,7 +13,7 @@ import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../types"; 
+import { RootStackParamList } from "../types";
 
 type CameraScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -32,8 +32,10 @@ export default function CameraScreen() {
   ] = MediaLibrary.usePermissions();
   const cameraRef = useRef<CameraView>(null);
   const navigation = useNavigation<CameraScreenNavigationProp>();
+  const [loading, isLoading] = useState(false);
 
   useEffect(() => {
+    isLoading(true);
     Location.requestForegroundPermissionsAsync()
       .then(({ status }) => {
         if (status !== "granted") {
@@ -109,16 +111,21 @@ export default function CameraScreen() {
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={takePicture}>
-            <Text style={styles.text}>Take Picture</Text>
-          </TouchableOpacity>
-        </View>
-      </CameraView>
+      
+      <CameraView
+        style={styles.camera}
+        facing={facing}
+        ref={cameraRef}
+      ></CameraView>
+      <View style={styles.buttonContainer}>
+      <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+        <Text style={styles.text}>Flip Camera</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={takePicture}>
+        <Text style={styles.text}>Take Picture</Text>
+      </TouchableOpacity>
+    </View>
+      
     </View>
   );
 }
@@ -127,34 +134,36 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    backgroundColor: 'white'
   },
   message: {
     textAlign: "center",
     paddingBottom: 10,
   },
   camera: {
-    flex: 1,
+
+    width: "100%",
+    height: "50%",
   },
   buttonContainer: {
-    flex: 1,
-    flexDirection: "column",
+    
+    flexDirection: "row",
     backgroundColor: "transparent",
-    margin: 64,
-    justifyContent: "space-around",
+    justifyContent: "space-between",
   },
   button: {
+    margin: 10,
+    padding: 12,
     alignSelf: "flex-end",
-    alignItems: "center",
+    backgroundColor: "#215140",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 1,
+    width: 150,
   },
   text: {
     fontSize: 24,
     fontWeight: "bold",
     color: "white",
-  },
-  preview: {
-    width: "100%",
-    height: 200,
-    marginTop: 20,
-    alignSelf: "center",
   },
 });
