@@ -9,6 +9,7 @@ import {
 import { Formik } from "formik";
 import { postLoginAttempt } from "../api";
 import { LoggedInContext } from "@/contexts/LoggedIn";
+import CryptoES from "crypto-es";
 
 const { validateLogin } = require("../scripts/utils");
 const backgroundImage = require("../assets/images/home-screen-background.png");
@@ -51,8 +52,14 @@ export default function Login(props: Props) {
     if (Object.values(checkValidity).includes(false)) {
       return;
     }
-    postLoginAttempt(values, handleSuccess)
+    encryptThenLoginAttempt(values)
   };
+
+  const encryptThenLoginAttempt = (values: FormValues): void => {
+    const encryptedValues = JSON.parse(JSON.stringify(values))
+    encryptedValues.password = CryptoES.SHA256(encryptedValues.password).toString()
+    postLoginAttempt(encryptedValues, handleSuccess)
+  }
 
   const handleSuccess = (dbResponse: DataBaseResponse) => {
     setLoggedIn(dbResponse);
