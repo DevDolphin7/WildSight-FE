@@ -45,6 +45,7 @@ export default function App() {
 				options={{ title: "Your Sighting Details" }}
 			/>
 		</Stack.Navigator>
+    
 	);
 }
 
