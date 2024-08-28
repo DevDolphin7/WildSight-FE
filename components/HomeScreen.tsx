@@ -1,5 +1,5 @@
 import { useRef, useContext } from "react";
-import { View, Text, Image, Button, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import PagerView from "react-native-pager-view";
 import HealthAndSafetyText from "./HealthAndSafetyText";
 import Instructions from "./Instructions";
@@ -26,57 +26,69 @@ export default function HomeScreen(props: Props) {
           {loggedIn ? (
             <>
               <Text>Welcome {loggedIn.username}!</Text>
-              <Button
-                title="Log out"
+              <TouchableOpacity
+                style={styles.secondaryButton} 
                 onPress={() => {
                   setLoggedIn(null);
                 }}
-              />
+              >
+                <Text style={styles.secondaryButtonText}>Log out</Text>
+              </TouchableOpacity>
             </>
           ) : (
-            <>
-              <Button
-                title="Sign Up"
+            <View style={styles.actionButtonsContainer}> 
+              <TouchableOpacity
+                style={styles.actionButton} 
                 onPress={() => {
                   setSignUpOpen(true);
                 }}
-              />
-              <Button
-                title="Login"
+              >
+                <Text style={styles.actionButtonText}>Sign Up</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.actionButton} 
                 onPress={() => {
                   setLoginOpen(true);
                 }}
-              />
-            </>
+              >
+                <Text style={styles.actionButtonText}>Login</Text>
+              </TouchableOpacity>
+            </View>
           )}
-          <Button
-            title="Get Started ->"
+          <TouchableOpacity
+            style={styles.button} 
             onPress={() => {
               ref.current?.setPage(1);
             }}
-          />
+          >
+            <Text style={styles.buttonText}>Get Started {"->"}</Text>
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.background} key="2">
         <View style={styles.page}>
           <HealthAndSafetyText />
-          <Button
-            title="<- Page 2 ->"
+          <TouchableOpacity
+            style={styles.button} 
             onPress={() => {
               ref.current?.setPage(2);
             }}
-          />
+          >
+            <Text style={styles.buttonText}>{"<- Page 2 ->"}</Text>
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.background} key="3">
         <View style={styles.page}>
           <Instructions />
-          <Button
-            title="<- Go Back->"
+          <TouchableOpacity
+            style={styles.button} 
             onPress={() => {
               ref.current?.setPage(0);
             }}
-          />
+          >
+            <Text style={styles.buttonText}>{"<- Go Back ->"}</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </PagerView>
@@ -106,5 +118,57 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: "#21514080",
     backgroundColor: "#ffd5bd80",
+  },
+  button: {
+    backgroundColor: "#215140",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+    marginVertical: 5,
+  },
+  buttonText: {
+    color: "#FEFEFF",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  secondaryButton: {
+    backgroundColor: "#A5CCC0",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 10,
+    shadowColor: "transparent", 
+    elevation: 0, 
+    marginVertical: 5,
+  },
+  secondaryButtonText: {
+    color: "#215140", 
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  actionButtonsContainer: {
+    flexDirection: "row", 
+    justifyContent: "space-between",
+    width: "80%", 
+    marginTop: 10,
+  },
+  actionButton: {
+    backgroundColor: "#A5CCC0",  
+    paddingVertical: 10, 
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    marginHorizontal: 5, 
+  },
+  actionButtonText: {
+    color: "#215140", 
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
