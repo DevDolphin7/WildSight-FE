@@ -104,7 +104,11 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
       <Text style={styles.subtitle}>
         Also called: {result.species.commonNames.join(", ")}
       </Text>
-      <Button title="Use This One" onPress={handleSubmit} />
+      <Button
+        color="#215140"
+        title="Add to My Sightings"
+        onPress={handleSubmit}
+      />
     </View>
   );
 };
