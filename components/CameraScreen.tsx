@@ -13,7 +13,7 @@ import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../types"; 
+import { RootStackParamList } from "../types";
 
 type CameraScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -26,10 +26,8 @@ export default function CameraScreen() {
   const [latPosition, setLatPosition] = useState(0);
   const [longPosition, setLongPosition] = useState(0);
   const [photoUri, setPhotoUri] = useState<string>("");
-  const [
-    mediaLibraryPermission,
-    requestMediaLibraryPermission,
-  ] = MediaLibrary.usePermissions();
+  const [mediaLibraryPermission, requestMediaLibraryPermission] =
+    MediaLibrary.usePermissions();
   const cameraRef = useRef<CameraView>(null);
   const navigation = useNavigation<CameraScreenNavigationProp>();
 
@@ -111,11 +109,14 @@ export default function CameraScreen() {
     <View style={styles.container}>
       <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
+          <TouchableOpacity
+            style={styles.flipButton}
+            onPress={toggleCameraFacing}
+          >
+            <Text style={styles.flipText}>Flip</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={takePicture}>
-            <Text style={styles.text}>Take Picture</Text>
+          <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
+            <View style={styles.circleButton} />
           </TouchableOpacity>
         </View>
       </CameraView>
@@ -137,24 +138,33 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 1,
-    flexDirection: "column",
+    flexDirection: "row",
     backgroundColor: "transparent",
-    margin: 64,
-    justifyContent: "space-around",
+    marginBottom: 64,
+    justifyContent: "center",
+    alignItems: "flex-end",
   },
-  button: {
-    alignSelf: "flex-end",
+  captureButton: {
     alignItems: "center",
+    justifyContent: "center",
   },
-  text: {
-    fontSize: 24,
-    fontWeight: "bold",
+  circleButton: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    borderWidth: 5,
+    borderColor: "white",
+  },
+  flipButton: {
+    position: "absolute",
+    left: 95,
+    bottom: 25,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  flipText: {
+    fontSize: 20,
     color: "white",
-  },
-  preview: {
-    width: "100%",
-    height: 200,
-    marginTop: 20,
-    alignSelf: "center",
   },
 });
