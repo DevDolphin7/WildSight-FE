@@ -42,7 +42,7 @@ export default function MyWildlife() {
   // Fetch data when the tab gains focus
   useFocusEffect(
     useCallback(() => {
-      getSightingsByUserId(user_id, 50.5, -4.5, 50, -5.3)
+      getSightingsByUserId(user_id, 64, 4.5, 48.7, -12.6)
         .then((data) => {
           setSightings(data);
         })
