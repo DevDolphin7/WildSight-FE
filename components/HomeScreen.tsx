@@ -20,14 +20,14 @@ export default function HomeScreen(props: Props) {
       <View style={styles.background} key="1">
         <View style={styles.page}>
           <Image
-            source={require("@/assets/images/partial-react-logo.png")}
-            style={styles.reactLogo}
+            source={require("@/assets/images/wildsightLogo.png")}
+            style={styles.wildsightlogo}
           />
           {loggedIn ? (
             <>
               <Text>Welcome {loggedIn.username}!</Text>
               <TouchableOpacity
-                style={styles.secondaryButton} 
+                style={styles.secondaryButton}
                 onPress={() => {
                   setLoggedIn(null);
                 }}
@@ -36,9 +36,9 @@ export default function HomeScreen(props: Props) {
               </TouchableOpacity>
             </>
           ) : (
-            <View style={styles.actionButtonsContainer}> 
+            <View style={styles.actionButtonsContainer}>
               <TouchableOpacity
-                style={styles.actionButton} 
+                style={styles.actionButton}
                 onPress={() => {
                   setSignUpOpen(true);
                 }}
@@ -46,7 +46,7 @@ export default function HomeScreen(props: Props) {
                 <Text style={styles.actionButtonText}>Sign Up</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.actionButton} 
+                style={styles.actionButton}
                 onPress={() => {
                   setLoginOpen(true);
                 }}
@@ -56,7 +56,7 @@ export default function HomeScreen(props: Props) {
             </View>
           )}
           <TouchableOpacity
-            style={styles.button} 
+            style={styles.button}
             onPress={() => {
               ref.current?.setPage(1);
             }}
@@ -69,7 +69,7 @@ export default function HomeScreen(props: Props) {
         <View style={styles.page}>
           <HealthAndSafetyText />
           <TouchableOpacity
-            style={styles.button} 
+            style={styles.button}
             onPress={() => {
               ref.current?.setPage(2);
             }}
@@ -82,7 +82,7 @@ export default function HomeScreen(props: Props) {
         <View style={styles.page}>
           <Instructions />
           <TouchableOpacity
-            style={styles.button} 
+            style={styles.button}
             onPress={() => {
               ref.current?.setPage(0);
             }}
@@ -96,8 +96,8 @@ export default function HomeScreen(props: Props) {
 }
 
 const styles = StyleSheet.create({
-  reactLogo: {
-    height: 178,
+  wildsightlogo: {
+    height: 200,
     width: 290,
   },
   background: {
@@ -142,31 +142,31 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 10,
-    shadowColor: "transparent", 
-    elevation: 0, 
+    shadowColor: "transparent",
+    elevation: 0,
     marginVertical: 5,
   },
   secondaryButtonText: {
-    color: "#215140", 
+    color: "#215140",
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
   },
   actionButtonsContainer: {
-    flexDirection: "row", 
+    flexDirection: "row",
     justifyContent: "space-between",
-    width: "80%", 
+    width: "80%",
     marginTop: 10,
   },
   actionButton: {
-    backgroundColor: "#A5CCC0",  
-    paddingVertical: 10, 
+    backgroundColor: "#A5CCC0",
+    paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
-    marginHorizontal: 5, 
+    marginHorizontal: 5,
   },
   actionButtonText: {
-    color: "#215140", 
+    color: "#215140",
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
