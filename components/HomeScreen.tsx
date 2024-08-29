@@ -87,7 +87,7 @@ export default function HomeScreen(props: Props) {
               ref.current?.setPage(0);
             }}
           >
-            <Text style={styles.buttonText}>{"<- Go Back ->"}</Text>
+            <Text style={styles.buttonText}>{"<- Go Back"}</Text>
           </TouchableOpacity>
         </View>
       </View>
