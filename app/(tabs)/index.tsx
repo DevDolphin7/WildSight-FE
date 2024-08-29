@@ -16,21 +16,9 @@ export default function Index() {
       resizeMode="cover"
     >
       <Modal visible={signUpOpen} animationType="slide">
-        <Button
-          title="close"
-          onPress={() => {
-            setSignUpOpen(false);
-          }}
-        />
         <SignUp setSignUpOpen={setSignUpOpen} />
       </Modal>
       <Modal visible={loginOpen} animationType="slide">
-        <Button
-          title="close"
-          onPress={() => {
-            setLoginOpen(false);
-          }}
-        />
         <Login setLoginOpen={setLoginOpen} />
       </Modal>
       <HomeScreen setSignUpOpen={setSignUpOpen} setLoginOpen={setLoginOpen} />
