@@ -46,10 +46,12 @@ export const postUser = (
   values: SignUpFormValues,
   handleSuccess: Function
 ): void => {
+  console.log(values, "<<<<<<<<<<<<")
   axios
-    .post("https://wildside-be.onrender.com/api/users/", values)
+    .post("https://wildsight-be.onrender.com/api/users/", values)
     .then((response) => handleSuccess(values, response.data.user))
     .catch((error) => {
+      console.log(error.response.config.data)
       if (error.response.data.message) {
         alert(error.response.data.message);
       } else {
@@ -63,7 +65,7 @@ export const postLoginAttempt = (
   handleSuccess: Function
 ): void => {
   axios
-    .post("https://wildside-be.onrender.com/api/users/login", values)
+    .post("https://wildsight-be.onrender.com/api/users/login", values)
     .then((response) => handleSuccess(response.data.user))
     .catch((error) => {
       alert(error.response.data.message);
