@@ -5,7 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Image,
-  Button,
+  TouchableOpacity,
 } from "react-native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import {
@@ -39,7 +39,6 @@ export default function MyWildlife() {
 
   const navigation = useNavigation();
 
-  // Fetch data when the tab gains focus
   useFocusEffect(
     useCallback(() => {
       getSightingsByUserId(user_id, 64, 4.5, 48.7, -12.6)
@@ -118,15 +117,16 @@ export default function MyWildlife() {
                 {new Date(sighting.sighting_date).toLocaleDateString("en-GB")}
               </Text>
               <View style={styles.buttonContainer}>
-                <Button
-                  color="#215140"
-                  title="View"
+                <TouchableOpacity
+                  style={styles.button}
                   onPress={() =>
                     navigation.navigate("SingleWildlife", {
                       WildSightSightingId: sighting.sighting_id,
                     })
                   }
-                />
+                >
+                  <Text style={styles.buttonText}>View</Text>
+                </TouchableOpacity>
               </View>
             </View>
             <Icon
@@ -163,15 +163,16 @@ export default function MyWildlife() {
               {new Date(favourite.sighting_date).toLocaleDateString("en-GB")}
             </Text>
             <View style={styles.buttonContainer}>
-              <Button
-                color="#215140"
-                title="View Details"
+              <TouchableOpacity
+                style={styles.button}
                 onPress={() =>
                   navigation.navigate("SingleWildlife", {
                     WildSightSightingId: favourite.sighting_id,
                   })
                 }
-              />
+              >
+                <Text style={styles.buttonText}>View Details</Text>
+              </TouchableOpacity>
             </View>
           </View>
           <Icon
@@ -191,7 +192,12 @@ export default function MyWildlife() {
       {...props}
       indicatorStyle={{ backgroundColor: "white" }}
       style={{ backgroundColor: "#215140" }}
-      labelStyle={{ color: "white", fontWeight: "bold" }}
+      labelStyle={{
+        color: "white",
+        fontWeight: "bold",
+        textTransform: "none",
+        fontSize: 20,
+      }}
       activeColor="white"
       inactiveColor="#a5ccc0"
     />
@@ -267,6 +273,18 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginTop: 10,
   },
+  button: {
+    backgroundColor: "#215140",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
   heartIcon: {
     position: "absolute",
     top: 10,
@@ -288,7 +306,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     width: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    backgroundColor: "rgba(250,250,250, 1)",
     paddingVertical: 4,
     alignItems: "center",
     zIndex: 2,
@@ -302,7 +320,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     width: "100%",
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    backgroundColor: "rgba(250,250,250, 1)",
     paddingVertical: 4,
     alignItems: "center",
     zIndex: 2,

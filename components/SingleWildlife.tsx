@@ -16,6 +16,7 @@ import {
 import { getINatObservationById } from "../app/iNaturalist-api";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { LoggedInContext } from "@/contexts/LoggedIn";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function SingleWildlife() {
   const [singleWildlife, setSingleWildlife] = useState({});
@@ -160,11 +161,12 @@ export default function SingleWildlife() {
           )}
         </ScrollView>
       )}
-      <Button
-        title="Go to My Wildlife"
+      <TouchableOpacity
+        style={styles.myWildlifeButton}
         onPress={handleNavigateToExplore}
-        color="#215140"
-      />
+      >
+        <Text style={styles.myWildlifeButtonText}>Go to My Wildlife</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -230,5 +232,19 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     margin: 5,
+  },
+  myWildlifeButton: {
+    backgroundColor: "#215140",
+    borderRadius: 8,
+    paddingVertical: 12,
+    alignItems: "center",
+    width: "100%",
+    alignSelf: "center",
+    marginVertical: 10,
+  },
+  myWildlifeButtonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
