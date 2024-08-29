@@ -429,7 +429,8 @@ const styles = StyleSheet.create({
   },
   closeButtonTextPopup: {
     color: "white",
-    fontSize: 14,
+    fontSize: 18,
+    fontWeight: "800",
   },
   popupHeadingTop: {
     fontSize: 18,

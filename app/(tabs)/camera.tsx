@@ -32,12 +32,12 @@ export default function App() {
       <Stack.Screen
         name="PlantIdentification"
         component={PlantIdentification}
-        options={{ title: "Photo Identification" }}
+        options={{ title: "Plant Identification" }}
       />
       <Stack.Screen
         name="AiResult"
         component={AiResult}
-        options={{ title: "AiResult" }}
+        options={{ title: "AI matches" }}
       />
       <Stack.Screen
         name="SingleWildlife"

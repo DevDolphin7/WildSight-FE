@@ -34,15 +34,14 @@ const AiResult: React.FC<{ route: AiResultRouteProp }> = ({ route }) => {
   const { results } = data;
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <Text style={styles.title}>AI Matches</Text>
-        <Text style={styles.subtitle1}>
-          Select the option below that looks the closest to add to your
-          sightings
-        </Text>
-        <Image style={styles.image} source={{ uri: photoUri }} />
+    <View style={styles.container}>
+      <Text style={styles.subtitle1}>
+        To add to your sightings, please select the option that best matches
+        your photo
+      </Text>
+      <Image style={styles.image} source={{ uri: photoUri }} />
 
+      <ScrollView>
         <View>
           {results.map((result: Result) => {
             return (
@@ -56,15 +55,15 @@ const AiResult: React.FC<{ route: AiResultRouteProp }> = ({ route }) => {
             );
           })}
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    padding: 10,
     paddingTop: 8,
     backgroundColor: "#fff",
   },
@@ -93,9 +92,11 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   image: {
-    width: "100%",
-    height: 300,
+    width: "95%",
+    height: 230,
     borderRadius: 8,
+    marginBottom: 10,
+    alignSelf: "center",
   },
   imageMatch: {
     width: 200,

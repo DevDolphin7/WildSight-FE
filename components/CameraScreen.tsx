@@ -14,6 +14,7 @@ import * as Location from "expo-location";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../types";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 type CameraScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -30,25 +31,37 @@ export default function CameraScreen() {
     MediaLibrary.usePermissions();
   const cameraRef = useRef<CameraView>(null);
   const navigation = useNavigation<CameraScreenNavigationProp>();
-  const [loading, isLoading] = useState(false);
 
   useEffect(() => {
-    isLoading(true);
     Location.requestForegroundPermissionsAsync()
       .then(({ status }) => {
         if (status !== "granted") {
           Alert.alert("Permission to access location denied");
           return Promise.reject("Location permission not granted");
         }
-        return Location.getCurrentPositionAsync({});
-      })
-      .then((data) => {
-        setLatPosition(data.coords.latitude);
-        setLongPosition(data.coords.longitude);
+        return Location.watchPositionAsync(
+          {
+            accuracy: Location.Accuracy.High,
+            timeInterval: 1000,
+            distanceInterval: 1,
+          },
+          (location) => {
+            setLatPosition(location.coords.latitude);
+            setLongPosition(location.coords.longitude);
+          }
+        );
       })
       .catch((err) => {
         console.log(err);
       });
+
+    return () => {
+      Location.hasServicesEnabledAsync().then((enabled) => {
+        if (enabled) {
+          Location.stopLocationUpdatesAsync();
+        }
+      });
+    };
   }, []);
 
   const takePicture = () => {
@@ -109,19 +122,21 @@ export default function CameraScreen() {
 
   return (
     <View style={styles.container}>
-      <CameraView
-        style={styles.camera}
-        facing={facing}
-        ref={cameraRef}
-      ></CameraView>
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-          <Text style={styles.text}>Flip Camera</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={takePicture}>
-          <Text style={styles.text}>Take Picture</Text>
-        </TouchableOpacity>
-      </View>
+      <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.flipButton}
+            onPress={toggleCameraFacing}
+          >
+            {/* <Text style={styles.flipText}>Flip</Text> */}
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
+            <View style={styles.circleButton}>
+              <FontAwesome name="camera" size={40} color="#fff" />
+            </View>
+          </TouchableOpacity>
+        </View>
+      </CameraView>
     </View>
   );
 }
@@ -130,40 +145,49 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "white",
   },
   message: {
     textAlign: "center",
     paddingBottom: 10,
   },
   camera: {
-    width: "100%",
-    height: "50%",
+    flex: 1,
   },
   buttonContainer: {
-    flexDirection: "row",
-    backgroundColor: "transparent",
-    justifyContent: "space-between",
-  },
-  button: {
-    margin: 10,
-    padding: 12,
-    alignSelf: "flex-end",
-    backgroundColor: "#215140",
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: 1,
-    width: 150,
     flex: 1,
     flexDirection: "row",
+    backgroundColor: "transparent",
     marginBottom: 64,
     justifyContent: "center",
     alignItems: "flex-end",
   },
-
-  text: {
+  captureButton: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  circleButton: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: "#215140",
+    borderWidth: 5,
+    borderColor: "#a5ccc0",
+    alignItems: "center", // Center the icon horizontally
+    justifyContent: "center", // Center the icon vertically
+  },
+  cameraIcon: {
+    width: 40,
+    height: 40,
+  },
+  flipButton: {
+    position: "absolute",
+    left: 95,
+    bottom: 25,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  flipText: {
+    fontSize: 20,
     color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
   },
 });

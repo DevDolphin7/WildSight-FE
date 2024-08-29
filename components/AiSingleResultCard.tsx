@@ -143,13 +143,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 3,
-    padding: 12,
+    padding: 10,
   },
   titleContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 8,
+    marginBottom: 4,
   },
   titleTextContainer: {
     flex: 1,
@@ -169,13 +169,13 @@ const styles = StyleSheet.create({
   },
   imageMatch: {
     width: "100%",
-    height: 200,
+    height: 190,
     borderRadius: 8,
   },
   text: {
     fontSize: 16,
     fontWeight: "bold",
-    marginTop: 8,
+    marginTop: 4,
   },
   text1: {
     fontSize: 16,

@@ -3,10 +3,11 @@ import {
   View,
   Image,
   StyleSheet,
-  Button,
   Text,
   Alert,
   ActivityIndicator,
+  TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import axios from "axios";
@@ -66,21 +67,23 @@ const PlantIdentification: React.FC<PlantIdentificationProps> = ({
         });
 
         Alert.alert(
-          "We've found some matches",
-          `Choose the wildlife you've sighted`
+          "Plants Found",
+          `Choose the plant that looks most like your image.`
         );
       })
       .catch((error) => {
         console.error("Error submitting plant identification:", error);
         Alert.alert(
-          "Error",
-          "An error occurred while submitting the plant identification."
+          "Plant Not Found",
+          "The AI could not find your plant. Please retake your image and resubmit"
         );
       })
       .finally(() => {
         setUploading(false);
       });
   };
+
+  const screenWidth = Dimensions.get("window").width;
 
   return (
     <View style={styles.container}>
@@ -108,21 +111,23 @@ const PlantIdentification: React.FC<PlantIdentificationProps> = ({
         </Picker>
       </View>
       <View style={styles.buttonContainer}>
-        <View style={styles.buttonWrapper}>
-          <Button
-            color="#215140"
-            title="Submit for Identification"
-            onPress={handleSubmit}
-            disabled={uploading}
-          />
-        </View>
-        <View style={styles.buttonWrapper}>
-          <Button
-            title="Retake Photo"
-            color="#a5ccc0"
-            onPress={() => navigation.navigate("Camera")}
-          />
-        </View>
+        <TouchableOpacity
+          style={[styles.button, { width: screenWidth * 0.8 }]}
+          onPress={handleSubmit}
+          disabled={uploading}
+        >
+          <Text style={styles.buttonText}>Submit for Identification</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            styles.retakePhotoButton,
+            { width: screenWidth * 0.8 },
+          ]}
+          onPress={() => navigation.navigate("Camera")}
+        >
+          <Text style={styles.buttonText}>Retake Photo</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -136,7 +141,7 @@ const styles = StyleSheet.create({
   },
   preview: {
     width: "100%",
-    height: 300,
+    height: 400,
     marginBottom: 20,
   },
   label: {
@@ -147,7 +152,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 5,
-    marginBottom: 20,
+    marginBottom: 8,
     width: "80%",
   },
   picker: {
@@ -155,11 +160,24 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   buttonContainer: {
-    width: "80%",
-    marginVertical: 20,
-  },
-  buttonWrapper: {
+    width: "100%",
+    alignItems: "center",
     marginVertical: 10,
+  },
+  button: {
+    backgroundColor: "#215140",
+    borderRadius: 8,
+    paddingVertical: 12,
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  retakePhotoButton: {
+    backgroundColor: "#a5ccc0",
   },
   loadingOverlay: {
     position: "absolute",
