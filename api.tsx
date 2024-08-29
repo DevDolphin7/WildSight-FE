@@ -46,12 +46,10 @@ export const postUser = (
   values: SignUpFormValues,
   handleSuccess: Function
 ): void => {
-  console.log(values, "<<<<<<<<<<<<")
   axios
     .post("https://wildsight-be.onrender.com/api/users/", values)
     .then((response) => handleSuccess(values, response.data.user))
     .catch((error) => {
-      console.log(error.response.config.data)
       if (error.response.data.message) {
         alert(error.response.data.message);
       } else {
