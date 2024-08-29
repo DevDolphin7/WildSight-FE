@@ -1,6 +1,7 @@
 import { useRef, useContext } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import PagerView from "react-native-pager-view";
+import PoweredBy from "./PoweredBy";
 import HealthAndSafetyText from "./HealthAndSafetyText";
 import Instructions from "./Instructions";
 import { LoggedInContext } from "@/contexts/LoggedIn";
@@ -16,8 +17,21 @@ export default function HomeScreen(props: Props) {
   const { loggedIn, setLoggedIn } = useContext(LoggedInContext);
 
   return (
-    <PagerView style={styles.background} initialPage={0} ref={ref}>
+    <PagerView style={styles.background} initialPage={1} ref={ref}>
       <View style={styles.background} key="1">
+        <View style={styles.page}>
+          <PoweredBy />
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              ref.current?.setPage(1);
+            }}
+          >
+            <Text style={styles.buttonText}>{"Go Back ->"}</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View style={styles.background} key="2">
         <View style={styles.page}>
           <Image
             source={require("@/assets/images/wildsightLogo.png")}
@@ -58,33 +72,33 @@ export default function HomeScreen(props: Props) {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              ref.current?.setPage(1);
+              ref.current?.setPage(2);
             }}
           >
-            <Text style={styles.buttonText}>Get Started {"->"}</Text>
+            <Text style={styles.buttonText}>{"<- Get started ->"}</Text>
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.background} key="2">
+      <View style={styles.background} key="3">
         <View style={styles.page}>
           <HealthAndSafetyText />
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              ref.current?.setPage(2);
+              ref.current?.setPage(3);
             }}
           >
             <Text style={styles.buttonText}>{"<- Page 2 ->"}</Text>
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.background} key="3">
+      <View style={styles.background} key="4">
         <View style={styles.page}>
           <Instructions />
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              ref.current?.setPage(0);
+              ref.current?.setPage(1);
             }}
           >
             <Text style={styles.buttonText}>{"<- Go Back"}</Text>
@@ -98,7 +112,8 @@ export default function HomeScreen(props: Props) {
 const styles = StyleSheet.create({
   wildsightlogo: {
     height: 200,
-    width: 290,
+    width: 260,
+    borderRadius: 70,
   },
   background: {
     flex: 1,
