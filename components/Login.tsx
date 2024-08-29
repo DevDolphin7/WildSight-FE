@@ -2,8 +2,9 @@ import { useState, useContext } from "react";
 import {
   ImageBackground,
   View,
+  Text,
   TextInput,
-  Button,
+  TouchableOpacity,
   StyleSheet,
 } from "react-native";
 import { Formik } from "formik";
@@ -129,10 +130,21 @@ export default function Login(props: Props) {
                 <FormGuidance guidance={"password"} />
               )}
             </View>
-            <Button title="Submit" onPress={handleSubmit as any} />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={handleSubmit as any}
+            >
+              <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
           </View>
         )}
       </Formik>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => setLoginOpen(false)}
+      >
+        <Text style={styles.buttonText}>Close</Text>
+      </TouchableOpacity>
     </ImageBackground>
   );
 }
@@ -168,5 +180,23 @@ const styles = StyleSheet.create({
   },
   invalidFormEntry: {
     backgroundColor: "#DD464680",
+  },
+  button: {
+    backgroundColor: "#215140",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+    marginVertical: 5,
+  },
+  buttonText: {
+    color: "#FEFEFF",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
