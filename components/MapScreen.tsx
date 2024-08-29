@@ -311,9 +311,9 @@ export default function MapScreen() {
                 <Text style={styles.closeButtonText}>X</Text>
               </Pressable>
             </View>
-            <Pressable style={styles.button} onPress={handleViewDetails}>
+            <TouchableOpacity style={styles.button} onPress={handleViewDetails}>
               <Text style={styles.buttonText}>View Details</Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </View>
       )}
@@ -382,10 +382,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginTop: 10,
     alignSelf: "flex-start",
+    borderRadius: 8,
   },
   buttonText: {
     color: "white",
     fontSize: 15,
+    fontWeight: "bold",
   },
   loadingContainer: {
     position: "absolute",
@@ -427,7 +429,8 @@ const styles = StyleSheet.create({
   },
   closeButtonTextPopup: {
     color: "white",
-    fontSize: 14,
+    fontSize: 18,
+    fontWeight: "800",
   },
   popupHeadingTop: {
     fontSize: 18,

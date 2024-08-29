@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Button,
   Text,
@@ -16,10 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-// Define the Species and Result interfaces to match the structure expected
-
 import { LoggedInContext } from "@/contexts/LoggedIn";
-
 
 interface Species {
   scientificNameWithoutAuthor: string;
@@ -65,7 +62,6 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
     user_id = loggedIn.user_id;
   }
 
-
   const handleSubmit = () => {
     setLoading(true);
     const scientificName = result.species.scientificNameWithoutAuthor;
@@ -76,12 +72,9 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
         const lat_position = latPosition;
         const common_name = result.species.commonNames[0];
         const taxon_name = scientificName;
-        // not actually the wiki url but instead the summary - can change BE column name to wiki summary and update FE too
-        const wikipedia_url = observation.taxon.wikipedia_summary.replace(
-          /<\/?[^>]+(>|$)/g,
-        
-        );
-
+        const wikipedia_url = observation.taxon.wikipedia_summary
+          .replace(/<\/?[^>]+(>|$)/g, "")
+          .substring(0, 255);
         const userSighting = {
           uploaded_image,
           long_position,
@@ -108,13 +101,17 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
 
   return (
     <View style={styles.card}>
-      <Text style={styles.cardtitle}>Scientific Name</Text>
-      <Text style={styles.cardtitle1}>
-        {result.species.scientificNameWithoutAuthor}
-      </Text>
-      <Text style={styles.cardsubtitle}>
-        {(result.score * 100).toFixed(0)}% accurate
-      </Text>
+      <View style={styles.titleContainer}>
+        <View style={styles.titleTextContainer}>
+          <Text style={styles.cardtitle}>Scientific Name</Text>
+          <Text style={styles.cardtitle1}>
+            {result.species.scientificNameWithoutAuthor}
+          </Text>
+        </View>
+        <Text style={styles.cardsubtitle}>
+          {(result.score * 100).toFixed(0)}% accurate
+        </Text>
+      </View>
 
       <Image
         style={styles.imageMatch}
@@ -124,29 +121,13 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
       <Text style={styles.text}>Also called</Text>
       <Text style={styles.text1}>{result.species.commonNames.join(", ")}</Text>
 
-
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-
-        <Text style={styles.select}>Select</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.subtitle}>
-        Scientific Name: {result.species.scientificNameWithoutAuthor}
-      </Text>
-      <Text style={styles.subtitle}>
-        Also called: {result.species.commonNames.join(", ")}
-      </Text>
-
       {loading ? (
         <ActivityIndicator size="large" color="#215140" />
       ) : (
-        <Button
-          color="#215140"
-          title="Add to My Sightings"
-          onPress={handleSubmit}
-        />
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+          <Text style={styles.select}>Select</Text>
+        </TouchableOpacity>
       )}
-
     </View>
   );
 };
@@ -154,70 +135,65 @@ const AiSingleResultCard: React.FC<AiSingleResultCardProps> = ({
 const styles = StyleSheet.create({
   card: {
     marginBottom: 16,
-	marginTop: 16,
+    marginTop: 16,
     borderRadius: 8,
+    backgroundColor: "white",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowRadius: 8,
+    elevation: 3,
+    padding: 10,
   },
-  subtitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    marginBottom: 8,
+  titleContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 4,
   },
-  paragraph: {
-    fontSize: 16,
-    fontWeight: "400",
-    marginBottom: 12,
-  },
-  imageMatch: {
-    width: "100%",
-    height: 200,
-    borderRadius: 8,
+  titleTextContainer: {
+    flex: 1,
   },
   cardtitle: {
     fontSize: 20,
     fontWeight: "600",
   },
-  cardsubtitle: {
-    fontSize: 18,
+  cardtitle1: {
+    fontSize: 14,
     fontWeight: "600",
-    paddingTop: 4,
-    paddingBottom: 4,
-    textAlign: "right",
   },
   cardsubtitle: {
     fontSize: 18,
     fontWeight: "600",
-    paddingTop: 4,
-    paddingBottom: 4,
     textAlign: "right",
+  },
+  imageMatch: {
+    width: "100%",
+    height: 190,
+    borderRadius: 8,
   },
   text: {
     fontSize: 16,
-    fontWeight: "600",
+    fontWeight: "bold",
+    marginTop: 4,
   },
   text1: {
     fontSize: 16,
+    marginBottom: 6,
   },
-  containerButton: {},
   button: {
     width: "100%",
-	alignSelf: "flex-end",
-
-
-    padding: 12,
-
-    alignContent: "center",
+    alignSelf: "flex-end",
+    padding: 8,
     backgroundColor: "#215140",
     borderRadius: 8,
-	alignItems: "center"
+    alignItems: "center",
   },
   select: {
-	fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
     color: "white",
-  }
+  },
 });
 
 export default AiSingleResultCard;
