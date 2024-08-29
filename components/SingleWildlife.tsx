@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Button,
+  TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {
@@ -16,7 +17,6 @@ import {
 import { getINatObservationById } from "../app/iNaturalist-api";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { LoggedInContext } from "@/contexts/LoggedIn";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function SingleWildlife() {
   const [singleWildlife, setSingleWildlife] = useState({});
