@@ -4,16 +4,16 @@ import { View, Text, FlatList, StyleSheet } from "react-native";
 export default function HealthAndSafetyText() {
   const safetyGuidelines = [
     {
-      key: "1",
-      title: "Foraging Warning",
-      content:
-        "This app is not intended for foraging. Many edible plants closely resemble toxic ones. The AI may not always accurately distinguish between species, as its learning is based on the images it has encountered. Always prioritise safety and do not rely on the app to determine whether a plant is safe to consume.",
-    },
-    {
       key: "2",
       title: "Leave Only Footsteps",
       content:
         "Enjoy nature responsibly by minimising your impact. While it's exciting to identify plant species, always consider whether it's worth the potential harm. If the plant could be damaged in the process, it’s better to admire it from a distance.",
+    },
+    {
+      key: "1",
+      title: "Foraging Warning",
+      content:
+        "This app is not intended for foraging. Many edible plants closely resemble toxic ones. The AI may not always accurately distinguish between species, as its learning is based on the images it has encountered. Always prioritise safety and do not rely on the app to determine whether a plant is safe to consume.",
     },
     {
       key: "3",
