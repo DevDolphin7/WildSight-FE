@@ -113,7 +113,7 @@ export default function SingleWildlife() {
                           /<\/?[^>]+(>|$)/g,
                           ""
                         )
-                      : null}
+                      : "Unable to find Wikipedia summary"}
                   </Text>
                 </View>
               ) : null}
@@ -140,10 +140,12 @@ export default function SingleWildlife() {
                   )}
                   <Text style={styles.summaryTitle}>Wikipedia Summary:</Text>
                   <Text style={styles.summaryText}>
-                    {singleWildlife.taxon?.wikipedia_summary.replace(
-                      /<\/?[^>]+(>|$)/g,
-                      ""
-                    )}
+                    {singleWildlife.taxon.wikipedia_summary
+                      ? singleWildlife.taxon.wikipedia_summary.replace(
+                          /<\/?[^>]+(>|$)/g,
+                          ""
+                        )
+                      : "Unable to find Wikipedia summary"}
                   </Text>
                   <View style={styles.observationPhotosContainer}>
                     <Text style={styles.photosTitle}>User Photos:</Text>

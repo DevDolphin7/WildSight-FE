@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const wildSightApi = axios.create({
-  baseURL: "https://wildside-be.onrender.com/api",
+  baseURL: "https://wildsight-be.onrender.com/api",
 });
 
 export const addUserSighting = (user_id: number, userSighting: any) => {
