@@ -1,50 +1,80 @@
-# Welcome to your Expo app 👋
+# WildSight (Frontend)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+WildSight is the frontend for a wildlife-themed web application. It provides a user-friendly interface for exploring wildlife species, habitats, and sightings. This project is built using React, TypeScript, and Expo, communicating with the WildSight backend API to display and manage wildlife-related data.
 
-## Get started
+## Table of Contents
 
-1. Install dependencies
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Technologies](#technologies)
+- [License](#license)
+
+## Features
+
+- Interactive user interface to explore species, habitats, and wildlife sightings
+- Integration with the backend API for dynamic data display
+- Responsive design for mobile and desktop users
+- Search and filter functionality for species and sightings
+- User-friendly forms for creating new species, habitats, and sightings
+
+## Installation
+
+1. **Clone the repository:**
 
    ```bash
-   npm install
-   ```
+   git clone https://github.com/DevDolphin7/WildSight-FE.git
+2. Navigate to the project directory:
 
-2. Start the app
+``` bash
+cd WildSight-FE
 
-   ```bash
-    npx expo start
-   ```
+```
+Install dependencies:
 
-In the output, you'll find options to open the app in a
+``` bash
+npm install
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Run the development server:
 
-## Learn more
+For web:
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npm start
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```
 
-## Join the community
+For Expo (mobile):
 
-Join our community of developers creating universal apps.
+``` bash
+expo start
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```
+
+Build for production:
+
+If you want to build the app for production:
+
+``` bash
+npm run build
+
+```
+
+## Usage
+Once the development server is running, you can access the application at http://localhost:3000 in your browser. For mobile testing, you can scan the QR code provided by Expo to run the app on your mobile device. You can navigate the interface to explore species, habitats, and sightings, as well as create, edit, or delete records.
+
+## Technologies
+- React - JavaScript library for building user interfaces
+- TypeScript - Typed superset of JavaScript for better code quality and maintainability
+- Expo - Framework for building native apps using React
+- Axios - HTTP client for API requests
+- React Router - For handling navigation between pages
+- CSS (Tailwind) - Styling framework for responsive design
+- Jest - Testing framework
+
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
